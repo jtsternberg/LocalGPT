@@ -4,8 +4,11 @@
 require __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
+use LocalGPT\Command\NewCommand;
 
 $application = new Application('LocalGPT', '1.0.0');
+
+$application->add(new NewCommand());
 
 // ... register commands here in the future
 

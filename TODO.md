@@ -20,15 +20,15 @@ This document outlines the development tasks for the `localgpt` CLI tool. It wil
 
 ## Phase 2: `new` Command (GPT Builder)
 
-- [ ] **`new` Command (Symfony Edition)**
-    - [ ] Create `src/Command/NewCommand.php` that extends `Symfony\Component\Console\Command\Command`.
-    - [ ] Configure the command name (`new`) and define an argument for the new GPT name.
-    - [ ] Use the `QuestionHelper` to create an interactive wizard, prompting for Title, Description, Provider, etc.
-    - [ ] Create the GPT directory (e.g., `my-new-gpt/`).
-    - [ ] Create the `reference-files/` subdirectory.
-    - [ ] Save the system prompt to `SYSTEM_PROMPT.md`.
-    - [ ] Copy any provided reference files into the `reference-files/` directory.
-    - [ ] Generate the final `gpt.json` file.
+- [x] **`new` Command (Symfony Edition)**
+    - [x] Create `src/Command/NewCommand.php` that extends `Symfony\Component\Console\Command\Command`.
+    - [x] Configure the command name (`new`) and define an argument for the new GPT name.
+    - [x] Use `SymfonyStyle` to create an interactive wizard, prompting for Title, Description, Provider, etc.
+    - [x] Create the GPT directory (e.g., `my-new-gpt/`).
+    - [x] Create the `reference-files/` subdirectory.
+    - [x] Save the system prompt to `SYSTEM_PROMPT.md`.
+    - [x] Copy any provided reference files into the `reference-files/` directory.
+    - [x] Generate the final `gpt.json` file.
 
 ## Phase 3: `chat` Command & Provider Integration
 
