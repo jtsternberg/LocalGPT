@@ -2,13 +2,17 @@
 
 namespace LocalGPT\Service;
 
+use Dotenv\Dotenv;
+
 class Config
 {
     protected $basePath;
+    protected $env;
 
     public function __construct()
     {
         $this->basePath = getcwd();
+        $this->env = Dotenv::createImmutable($this->basePath)->load();
     }
 
     public function loadGptConfig(string $gptName): array
@@ -27,5 +31,11 @@ class Config
         }
 
         return $config;
+    }
+
+    public function getApiKey(string $provider): ?string
+    {
+        $keyName = strtoupper($provider) . '_API_KEY';
+        return $this->env[$keyName] ?? null;
     }
 }
