@@ -4,19 +4,19 @@ This document outlines the development tasks for the `localgpt` CLI tool. It wil
 
 ## Phase 1: Project Setup & Configuration
 
-- [ ] **Project Setup**
-    - [ ] Initialize a Composer project: `composer init`.
-    - [ ] Edit `composer.json`: set name to `jtsternberg/localgpt`, define PSR-4 autoloading for `src/`, and set the `bin` directory.
-    - [ ] Add dependencies: `composer require symfony/console vlucas/phpdotenv`.
-    - [ ] Create the main executable `bin/localgpt`. This file will instantiate a `Symfony\Component\Console\Application`, register the commands, and run it.
-    - [ ] Create a standard `.gitignore` file for a Composer project.
-    - [ ] Manually create the `.env.example` file with `GEMINI_API_KEY=""`.
+- [x] **Project Setup**
+    - [x] Initialize a Composer project: `composer init`.
+    - [x] Edit `composer.json`: set name to `jtsternberg/localgpt`, define PSR-4 autoloading for `src/`, and set the `bin` directory.
+    - [x] Add dependencies: `composer require symfony/console vlucas/phpdotenv`.
+    - [x] Create the main executable `bin/localgpt`. This file will instantiate a `Symfony\Component\Console\Application`, register the commands, and run it.
+    - [x] Create a standard `.gitignore` file for a Composer project.
+    - [x] Manually create the `.env.example` file with `GEMINI_API_KEY=""`.
 
-- [ ] **Create `sample.gpt.json` file**
-    - [ ] Create a `sample.gpt.json` file to serve as the structural reference for GPT configurations.
+- [x] **Create `sample.gpt.json` file**
+    - [x] Create a `sample.gpt.json` file to serve as the structural reference for GPT configurations.
 
-- [ ] **Configuration Service**
-    - [ ] Create a `Config` service class in `src/Service/` to handle locating and parsing `gpt.json` files by directory name. This service will be used by both `new` and `chat` commands.
+- [x] **Configuration Service**
+    - [x] Create a `Config` service class in `src/Service/` to handle locating and parsing `gpt.json` files by directory name. This service will be used by both `new` and `chat` commands.
 
 ## Phase 2: `new` Command (GPT Builder)
 

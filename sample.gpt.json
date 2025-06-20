@@ -1,0 +1,11 @@
+{
+  "provider": "gemini",
+  "title": "Sample GPT",
+  "description": "A sample GPT configuration file.",
+  "skip_initial_prompt": false,
+  "model": "gemini-1.5-flash",
+  "system_prompt": "./SYSTEM_PROMPT.md",
+  "reference_files": [
+    "./reference-files/sample-reference.txt"
+  ]
+}
