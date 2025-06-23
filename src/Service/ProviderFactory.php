@@ -3,16 +3,19 @@
 namespace LocalGPT\Service;
 
 use LocalGPT\Provider\GeminiProvider;
+use LocalGPT\Provider\OpenAIProvider;
 use LocalGPT\Provider\ProviderInterface;
 
 class ProviderFactory
 {
 	public const SUPPORTED_PROVIDERS = [
-		'gemini',
+		'gemini' => GeminiProvider::class,
+		'openai' => OpenAIProvider::class,
 	];
 
 	public const MODEL_DEFAULTS = [
 		'gemini' => 'gemini-2.5-flash',
+		'openai' => 'gpt-4o-mini',
 	];
 
 	private Config $config;
@@ -24,20 +27,25 @@ class ProviderFactory
 
 	public function createProvider(string $providerName): ?ProviderInterface
 	{
-		if (!in_array($providerName, self::SUPPORTED_PROVIDERS)) {
+		$providerClass = $this->getProviderClass($providerName);
+		return new $providerClass($this->getProviderApiKey($providerName));
+	}
+
+	public function getProviderClass(string $providerName): string
+	{
+		if (!isset(self::SUPPORTED_PROVIDERS[$providerName])) {
 			throw new \Exception("Provider '{$providerName}' is not supported.");
 		}
 
-		switch ($providerName) {
-			case 'gemini':
-				$apiKey = $this->config->getApiKey('gemini');
-				if (!$apiKey) {
-					throw new \Exception('API key for gemini not found in .env file.');
-				}
-				return new GeminiProvider($apiKey);
-				// Add other providers here in the future
-			default:
-				throw new \Exception("Provider '{$providerName}' is not supported.");
+		return self::SUPPORTED_PROVIDERS[$providerName];
+	}
+
+	public function getProviderApiKey(string $providerName): string
+	{
+		$apiKey = $this->config->getApiKey($providerName);
+		if (!$apiKey) {
+			throw new \Exception("API key for {$providerName} not found in .env file.");
 		}
+		return $apiKey;
 	}
 }

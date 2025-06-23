@@ -59,8 +59,8 @@ class GeminiProvider implements ProviderInterface
 		}
 
 		$chat = $this->client
-		->generativeModel($this->model)
-		->startChat($history);
+			->generativeModel($this->model)
+			->startChat($history);
 
 		$response = $chat->sendMessage($lastMessage['parts'][0]['text']);
 

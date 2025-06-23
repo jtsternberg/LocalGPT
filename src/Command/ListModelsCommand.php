@@ -22,7 +22,7 @@ class ListModelsCommand extends Command
 		$configService = new Config();
 		$providerFactory = new ProviderFactory($configService);
 
-		foreach (ProviderFactory::SUPPORTED_PROVIDERS as $providerName) {
+		foreach (ProviderFactory::SUPPORTED_PROVIDERS as $providerName => $class) {
 			$io->section("Models for {$providerName}");
 
 			try {

@@ -35,8 +35,8 @@ class NewCommand extends Command
 		$description = $io->ask('Enter the description');
 		$providerName = $io->choice(
 			'Select a provider',
-			ProviderFactory::SUPPORTED_PROVIDERS,
-			'gemini'
+			array_keys(ProviderFactory::SUPPORTED_PROVIDERS),
+			'openai'
 		);
 
 		$model = '';
