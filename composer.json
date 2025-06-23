@@ -1,7 +1,9 @@
 {
     "name": "jtsternberg/localgpt",
     "description": "A command-line interface for creating and interacting with local, file-based custom GPTs.",
-    "type": "project",
+    "type": "library",
+    "keywords": ["cli", "gpt", "ai", "gemini", "console"],
+    "homepage": "https://github.com/jtsternberg/localgpt",
     "license": "MIT",
     "authors": [
         {

@@ -51,5 +51,5 @@ This document outlines the development tasks for the `localgpt` CLI tool. It wil
 
 - [x] Create a complete `pizza-pro` example directory with its `gpt.json` and `SYSTEM_PROMPT.md`.
 - [x] Review and finalize `README.md` to ensure all commands and features are accurately documented. (and explain how to use the `pizza-pro` example for testing)
-- [ ] Prepare `composer.json` for submission to Packagist.
+- [X] Prepare `composer.json` for submission to Packagist.
 - [ ] Create a GitHub release.
