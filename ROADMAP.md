@@ -15,14 +15,19 @@ System Prompt BUILDER - part of the `new` command. Works like openai's custom gp
 
 The final system prompt is saved to a `SYSTEM_PROMPT.md` file, and the file path is saved in the GPT configuration file.
 
-## Reference File Handling
+## Reference Files
 
 - [ ] Prompt for local file paths during the `new` command's interactive wizard.
 - [ ] Validate that the provided file paths exist.
-- [ ] Copy the validated files into the GPT's `reference-files` directory.
+- [ ] Convert the file to a markdown file, and add it to the `reference-files` directory.
 - [ ] Add the relative paths to the `reference_files` array in `gpt.json`.
+- [ ] Ensure that the reference files are pre-loaded into the chat, like the persona.
+- [ ] Build a meta prompt that explains the reference files and how to use them to the LLM.
 
 ## Chat History
 
-Chat History - part of the `chat` command. Works like openai's custom gpt chat interface that shows the chat history.
+Chat History - part of the `chat` command
 
+- [ ] Add a `chat-history.json` file to the GPT's directory, and store each message that is sentin the history.
+- [ ] Add a `useHistory` flag to the `chat` command.
+- [ ] If the `useHistory` flag is true, load the chat history from the `chat-history.json` file in the GPT's chat. The user should be able to see the history in the chat.
