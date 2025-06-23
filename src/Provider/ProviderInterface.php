@@ -4,9 +4,8 @@ namespace LocalGPT\Provider;
 
 interface ProviderInterface
 {
-    /**
-     * @param array $messages The array of messages for the chat context.
-     * @return string The response from the provider.
-     */
-    public function chat(array $messages): string;
+	public function setModel(string $model): void;
+	public function listModels(): array;
+	public function chat(array $history): string;
+	public function getDefaultModel(): string;
 }

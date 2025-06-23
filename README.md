@@ -41,7 +41,7 @@ The CLI will automatically load the required API key based on the `provider` spe
 
 ## Usage
 
-There are two main commands: `localgpt new` and `localgpt chat`.
+There are three main commands: `localgpt new`, `localgpt chat`, and `localgpt models`.
 
 ### 1. Creating a Custom GPT
 
@@ -70,17 +70,16 @@ The wizard will then create a `my-first-gpt/gpt.json` configuration file in your
 
 You can also create a `[name]/gpt.json` file yourself. Review [sample.gpt.json](sample.gpt.json) for an example.
 
-**`spanish-english-translator/gpt.json`**
+**`pizza-pro/gpt.json`**
 
 ```json
 {
-   "provider": "gemini",
-   "title": "Spanish-English Translator",
-   "description": "Translates text between Spanish and English.",
-   "skip_initial_prompt": false,
-   "model": "gemini-1.5-flash",
-   "system_prompt": "./SYSTEM_PROMPT.md",
-   "reference_files": []
+    "provider": "gemini",
+    "title": "Pizza Pro",
+    "description": "Pizza lover",
+    "model": "gemini-2.5-flash",
+    "system_prompt": "./SYSTEM_PROMPT.md",
+    "reference_files": []
 }
 ```
 
@@ -89,7 +88,7 @@ You can also create a `[name]/gpt.json` file yourself. Review [sample.gpt.json](
 Once you have your GPT configuration file, you can start a chat session with it using the `chat` command.
 
 ```bash
-localgpt chat spanish-english-translator
+localgpt chat pizza-pro
 ```
 
 This will start an interactive chat session. The CLI will read the JSON file, load the correct provider (Gemini, in this case), and use the system prompt, reference files, and model to have a contextual conversation.
@@ -97,12 +96,23 @@ This will start an interactive chat session. The CLI will read the JSON file, lo
 **Example Session:**
 
 ```
-$ localgpt chat spanish-english-translator
-Loading GPT: Spanish-English Translator...
+$ localgpt chat pizza-pro
+Loading GPT: Pizza Pro...
 Provider: gemini
-Model: gemini-1.5-flash
+Model: gemini-2.5-flash
 You can start chatting now. (type 'exit' to quit)
-> Translate 'hello world' to Spanish.
 
-🤖 Hola, mundo.
+> What is the best pizza in the world?
+
+🤖 The best pizza in the world is the Margherita pizza.
 >
+
+### 3. Listing Available Models
+
+To see a list of available models from the supported providers, use the `models` command:
+
+```bash
+localgpt models
+```
+
+This will output a list of models grouped by provider.

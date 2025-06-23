@@ -32,24 +32,24 @@ This document outlines the development tasks for the `localgpt` CLI tool. It wil
 
 ## Phase 3: `chat` Command & Provider Integration
 
-- [ ] **Provider System**
-    - [ ] Create a service in `src/Service/` to load the correct API key from the `.env` file based on the provider.
-    - [ ] Define a `ProviderInterface` in `src/Provider/` with a `chat(array $messages): string` method.
-    - [ ] Create a `GeminiProvider` class in `src/Provider/` that implements the interface. It will use an HTTP client to connect to the Gemini API.
+- [x] **Provider System**
+    - [x] Create a service in `src/Service/` to load the correct API key from the `.env` file based on the provider.
+    - [x] Define a `ProviderInterface` in `src/Provider/` with a `chat(array $messages): string` method.
+    - [x] Create a `GeminiProvider` class in `src/Provider/` that implements the interface. It will use an HTTP client to connect to the Gemini API.
 
-- [ ] **`chat` Command (Symfony Edition)**
-    - [ ] Create `src/Command/ChatCommand.php` that extends `Symfony\Component\Console\Command\Command`.
-    - [ ] Configure the command name (`chat`) and define an argument for the GPT name.
-    - [ ] In the `execute` method, use the `Config` service to load the specified GPT configuration.
-    - [ ] Read the system prompt and reference files.
-    - [ ] Use the `QuestionHelper` to create an interactive input loop.
-    - [ ] On each input, call the `GeminiProvider` with the full context (system prompt, history, user message).
-    - [ ] Use the `OutputInterface` to print the provider's response.
-    - [ ] Implement an `exit` keyword to terminate the chat.
+- [x] **`chat` Command (Symfony Edition)**
+    - [x] Create `src/Command/ChatCommand.php` that extends `Symfony\Component\Console\Command\Command`.
+    - [x] Configure the command name (`chat`) and define an argument for the GPT name.
+    - [x] In the `execute` method, use the `Config` service to load the specified GPT configuration.
+    - [x] Read the system prompt and reference files.
+    - [x] Use the `QuestionHelper` to create an interactive input loop.
+    - [x] On each input, call the `GeminiProvider` with the full context (system prompt, history, user message).
+    - [x] Use the `OutputInterface` to print the provider's response.
+    - [x] Implement an `exit` keyword to terminate the chat.
 
 ## Phase 4: Finalization & Documentation
 
-- [ ] Create a complete `spanish-english-translator` example directory with its `gpt.json` and `SYSTEM_PROMPT.md`.
-- [ ] Review and finalize `README.md` to ensure all commands and features are accurately documented. (and explain how to use the `spanish-english-translator` example for testing)
+- [x] Create a complete `pizza-pro` example directory with its `gpt.json` and `SYSTEM_PROMPT.md`.
+- [ ] Review and finalize `README.md` to ensure all commands and features are accurately documented. (and explain how to use the `pizza-pro` example for testing)
 - [ ] Prepare `composer.json` for submission to Packagist.
 - [ ] Create a GitHub release.
