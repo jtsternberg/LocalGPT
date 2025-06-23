@@ -39,18 +39,10 @@ This tool is designed to be extensible, allowing you to wrap any AI API. We're l
     ```
 The CLI will automatically load the required API key based on the `provider` specified in your GPT's configuration file.
 
-## Usage
+## Commands
 
-There are three main commands: `localgpt new`, `localgpt chat`, and `localgpt models`.
-
-### 1. Creating a Custom GPT
-
-To create a new GPT, you can either create a JSON file manually or use the interactive builder.
-Review [sample.gpt.json](sample.gpt.json) for an example.
-
-#### Using the Interactive Builder
-
-Run the `new` command:
+### Comnmand: `new`
+Creates a new GPT configuration via an interactive wizard.
 
 ```bash
 localgpt new my-first-gpt
@@ -59,16 +51,33 @@ localgpt new my-first-gpt
 This will launch a step-by-step wizard that asks you for the following information:
 *   **Title**: A name for your GPT.
 *   **Description**: A short description of what it does.
-*   **Provider**: The AI provider to use (e.g., `gemini`).
-*   **Model**: The specific model for that provider (e.g., `gemini-1.5-pro-latest`).
-*   **System Prompt**: The core instructions for the GPT. This should be markdown, or a path to a markdown file. The final prompt is stored to a `SYSTEM_PROMPT.md` file in a `my-first-gpt` directory, and the file path is saved in the GPT configuration file.
-*   **Reference Files**: Paths to local files to be included as context. These are stored in a `reference-files` directory in the `my-first-gpt` directory, and the file paths are saved in the GPT configuration file.
+*   **Provider**: Select a provider from a list of supported options (e.g., `gemini`).
+*   **Model**: Select a model from the chosen provider's available list.
+*   **System Prompt**: The core instructions for the GPT. This can be typed directly or pasted into the terminal. The prompt is stored in a `SYSTEM_PROMPT.md` file inside the new GPT's directory.
 
 The wizard will then create a `my-first-gpt/gpt.json` configuration file in your current directory.
 
-#### Manual Configuration
+### Comnmand: `chat`
+Starts an interactive chat session with a specified GPT.
 
-You can also create a `[name]/gpt.json` file yourself. Review [sample.gpt.json](sample.gpt.json) for an example.
+```bash
+localgpt chat my-first-gpt
+```
+
+### Comnmand: `models`
+Lists all available models from the supported AI providers.
+
+```bash
+localgpt models
+```
+
+## Getting Started with an Example
+
+This repository includes a `pizza-pro` example to help you get started quickly.
+
+### 1. Manual Configuration
+
+You can create a `[name]/gpt.json` file yourself. Review the `pizza-pro/gpt.json` file for an example of the structure.
 
 **`pizza-pro/gpt.json`**
 
@@ -83,36 +92,27 @@ You can also create a `[name]/gpt.json` file yourself. Review [sample.gpt.json](
 }
 ```
 
-### 2. Chatting with a Custom GPT
+### 2. Chatting with the Example GPT
 
-Once you have your GPT configuration file, you can start a chat session with it using the `chat` command.
+Once you have configured your API key, you can start a chat session with the `pizza-pro` example.
 
 ```bash
 localgpt chat pizza-pro
 ```
 
-This will start an interactive chat session. The CLI will read the JSON file, load the correct provider (Gemini, in this case), and use the system prompt, reference files, and model to have a contextual conversation.
+This will start an interactive chat session with the pre-configured pizza expert.
 
 **Example Session:**
 
 ```
 $ localgpt chat pizza-pro
-Loading GPT: Pizza Pro...
+Loading GPT: Pizza Pro
 Provider: gemini
 Model: gemini-2.5-flash
+
 You can start chatting now. (type 'exit' to quit)
 
 > What is the best pizza in the world?
 
 🤖 The best pizza in the world is the Margherita pizza.
 >
-
-### 3. Listing Available Models
-
-To see a list of available models from the supported providers, use the `models` command:
-
-```bash
-localgpt models
-```
-
-This will output a list of models grouped by provider.
