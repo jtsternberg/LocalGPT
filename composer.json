@@ -1,28 +1,28 @@
 {
-    "name": "jtsternberg/localgpt",
-    "description": "A command-line interface for creating and interacting with local, file-based custom GPTs.",
-    "type": "library",
-    "keywords": ["cli", "gpt", "ai", "gemini", "console"],
-    "homepage": "https://github.com/jtsternberg/localgpt",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Justin Sternberg",
-            "email": "me@jtsternberg.com"
-        }
-    ],
-    "require": {
-        "symfony/console": "^7.3",
-        "vlucas/phpdotenv": "^5.6",
-        "google-gemini-php/client": "^2.3",
-        "php-http/guzzle7-adapter": "^1.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "LocalGPT\\": "src/"
-        }
-    },
-    "bin": [
-        "bin/localgpt"
-    ]
+	"name": "jtsternberg/localgpt",
+	"description": "A command-line interface for creating and interacting with local, file-based custom GPTs.",
+	"type": "library",
+	"keywords": ["cli", "gpt", "ai", "gemini", "console"],
+	"homepage": "https://github.com/jtsternberg/localgpt",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Justin Sternberg",
+			"email": "me@jtsternberg.com"
+		}
+	],
+	"require": {
+		"symfony/console": "^7.3",
+		"vlucas/phpdotenv": "^5.6",
+		"google-gemini-php/client": "^2.3",
+		"php-http/guzzle7-adapter": "^1.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"LocalGPT\\": "src/"
+		}
+	},
+	"bin": [
+		"bin/localgpt"
+	]
 }

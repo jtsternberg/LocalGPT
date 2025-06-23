@@ -39,6 +39,8 @@ System Prompt BUILDER - part of the `new` command. Works like openai's custom gp
 
 The final system prompt is saved to a `SYSTEM_PROMPT.md` file, and the file path is saved in the GPT configuration file.
 
+Maybe we could use https://github.com/llm-agents-php/agents to build an agent for doing this?
+
 ## Reference Files
 
 - [ ] Prompt for local file paths during the `new` command's interactive wizard.
