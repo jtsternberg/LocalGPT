@@ -12,7 +12,7 @@ class Config
 	public function __construct()
 	{
 		$this->basePath = getcwd();
-		$this->env = Dotenv::createImmutable($this->basePath)->load();
+		$this->env = Dotenv::createImmutable(LOCALGPT_BASE_PATH)->load();
 	}
 
 	public function loadGptConfig(string $gptName): array

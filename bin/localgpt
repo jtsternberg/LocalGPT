@@ -3,6 +3,8 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
+define('LOCALGPT_BASE_PATH', dirname(__DIR__));
+
 use Symfony\Component\Console\Application;
 use LocalGPT\Command\NewCommand;
 use LocalGPT\Command\ChatCommand;
