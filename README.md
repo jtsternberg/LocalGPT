@@ -1,5 +1,7 @@
 # LocalGPT
 
+![LocalGPT](https://github.com/user-attachments/assets/f297580a-0de2-4443-b932-1e8fc85e4432)
+
 A command-line interface for creating and interacting with local, file-based custom GPTs, powered by your favorite AI providers.
 
 This tool is designed to be extensible, allowing you to wrap any AI API. We're launching with support for **Google Gemini**, with more providers coming soon.
