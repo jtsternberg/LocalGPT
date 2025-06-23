@@ -15,9 +15,9 @@ This tool is designed to be extensible, allowing you to wrap any AI API. We're l
   - [Prerequisites](#prerequisites)
   - [Installation & Configuration](#installation--configuration)
   - [Commands](#commands)
-    - [Comnmand: `new`](#comnmand-new)
-    - [Comnmand: `chat`](#comnmand-chat)
-    - [Comnmand: `models`](#comnmand-models)
+    - [Command: `new`](#command-new)
+    - [Command: `chat`](#command-chat)
+    - [Command: `models`](#command-models)
   - [Getting Started with an Example](#getting-started-with-an-example)
     - [1. Manual Configuration](#1-manual-configuration)
     - [2. Chatting with the Example GPT](#2-chatting-with-the-example-gpt)
@@ -61,7 +61,7 @@ The CLI will automatically load the required API key based on the `provider` spe
 
 ## Commands
 
-### Comnmand: `new`
+### Command: `new`
 Creates a new GPT configuration via an interactive wizard.
 
 ```bash
@@ -75,16 +75,18 @@ This will launch a step-by-step wizard that asks you for the following informati
 *   **Model**: Select a model from the chosen provider's available list.
 *   **System Prompt**: The core instructions for the GPT. This can be typed directly or pasted into the terminal. The prompt is stored in a `SYSTEM_PROMPT.md` file inside the new GPT's directory.
 
-The wizard will then create a `my-first-gpt/gpt.json` configuration file in your current directory.
+The wizard will create a new directory named after the slug you provide (e.g., `my-first-gpt/`). This directory will contain your `gpt.json` configuration file and any other related files, like the `SYSTEM_PROMPT.md`.
 
-### Comnmand: `chat`
+This approach keeps your custom GPTs organized and makes them easy to track in version control alongside your projects.
+
+### Command: `chat`
 Starts an interactive chat session with a specified GPT.
 
 ```bash
 localgpt chat my-first-gpt
 ```
 
-### Comnmand: `models`
+### Command: `models`
 Lists all available models from the supported AI providers.
 
 ```bash
