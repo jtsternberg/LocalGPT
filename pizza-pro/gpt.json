@@ -1,0 +1,8 @@
+{
+    "provider": "gemini",
+    "title": "Pizza Pro",
+    "description": "Pizza lover",
+    "model": "gemini-2.5-flash",
+    "system_prompt": "./SYSTEM_PROMPT.md",
+    "reference_files": []
+}
