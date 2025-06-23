@@ -5,10 +5,8 @@ namespace LocalGPT\Provider;
 use LLPhant\Chat\OpenAIChat;
 use LLPhant\OpenAIConfig;
 
-class OpenAIProvider implements ProviderInterface
+class OpenAIProvider extends BaseProvider
 {
-	public OpenAIChat $client;
-
 	public const DEFAULT_MODEL = 'gpt-4o-mini';
 
 	public function __construct(string $apiKey)
@@ -21,6 +19,7 @@ class OpenAIProvider implements ProviderInterface
 
 	public function setModel(string $model): void
 	{
+		parent::setModel($model);
 		$this->client->model = $model;
 	}
 
@@ -36,27 +35,20 @@ class OpenAIProvider implements ProviderInterface
 
 	public function chat(array $messages): string
 	{
+
 		// The last message is the new prompt.
 		$lastMessage = array_pop($messages);
-
 		if (empty($lastMessage['parts'][0]['text'])) {
 			return '';
 		}
 
-		// The system prompt is the first message.
-		$systemMessage = array_shift($messages);
-		if (!empty($systemMessage['parts'][0]['text'])) {
-			$this->client->setSystemMessage($systemMessage['parts'][0]['text']);
+		if (!empty($this->systemPrompt)) {
+			$this->client->setSystemMessage($this->systemPrompt);
 		}
 
 		// For now, we will not send the history to the LLM.
 		// We will implement this in a future step.
 
 		return $this->client->generateText($lastMessage['parts'][0]['text']);
-	}
-
-	public function getDefaultModel(): string
-	{
-		return self::DEFAULT_MODEL;
 	}
 }

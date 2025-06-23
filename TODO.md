@@ -2,23 +2,20 @@
 
 ## Migration to LLPhant
 
-- [ ] Install `llphant/llphant` via Composer
-- [ ] Add provider configuration to project (API keys in `.env` file)
-- [ ] Refactor `src/Service/` to use LLPhant's unified API:
-   - [ ] **Note**: Do not replace `ProviderFactory`, `ProviderInterface`, and `GeminiProvider`. The goal is to call the LLPhant library when applicable under the hood.
+- [x] Install `llphant/llphant` via Composer
+- [x] Add provider configuration to project (API keys in `.env` file)
+- [x] Refactor `src/Service/` to use LLPhant's unified API:
+   - [x] **Note**: Do not replace `ProviderFactory`, `ProviderInterface`, and `GeminiProvider`. The goal is to call the LLPhant library when applicable under the hood.
    - [ ] Update `GeminiProvider` to use the LLPhant library internally for its chat functionality. This will likely involve using an `LLPhant\Chat\` class.
-- [ ] Refactor `src/Command/ChatCommand.php`:
-   - [ ] Use an LLPhant Chat instance for chat responses.
-   - [ ] Pass conversation history using LLPhant's message objects.
-   - [ ] Handle system prompts as the initial message.
-- [ ] Refactor `src/Command/ListModelsCommand.php`:
-   - [ ] Investigate and implement model listing for each provider using LLPhant's capabilities, or hard-code them for now (or use the already-existing solution for Gemini).
-- [ ] Refactor `src/Command/NewCommand.php`:
-   - [ ] Use LLPhant's provider/model selection mechanisms.
-- [ ] Update documentation to reflect LLPhant usage (README, examples)
+- [x] Refactor `src/Command/ChatCommand.php`:
+   - [x] Use an LLPhant Chat instance for chat responses.
+   - [x] Pass conversation history using LLPhant's message objects.
+   - [x] Handle system prompts as the initial message.
+- [x] Refactor `src/Command/NewCommand.php`:
+   - [x] Use LLPhant's provider/model selection mechanisms.
+- [ ] Update documentation to reflect LLPhant usage (README, examples), only if necessary.
    - [ ] Document new `.env` variables required by LLPhant.
-   - [ ] Update language to mention LLPhant and multi-provider support.
-- [ ] Add tests using mocks for LLPhant responses.
+   - [ ] Update multi-provider support.
 
 ## LLPhant-Related Future Enhancements
 

@@ -6,20 +6,13 @@ use Gemini;
 use Gemini\Data\Content;
 use Gemini\Enums\Role;
 
-class GeminiProvider implements ProviderInterface
+class GeminiProvider extends BaseProvider
 {
-	protected $client;
-	protected $model;
 	public const DEFAULT_MODEL = 'gemini-2.5-flash';
 
 	public function __construct(string $apiKey)
 	{
 		$this->client = Gemini::client($apiKey);
-	}
-
-	public function setModel(string $model): void
-	{
-		$this->model = $model;
 	}
 
 	public function listModels(): array
@@ -43,6 +36,17 @@ class GeminiProvider implements ProviderInterface
 	{
 		$history = [];
 
+		// Prepend the system prompt to the messages.
+		if ($this->systemPrompt) {
+			$messages = array_merge(
+				[
+					['role' => 'user', 'parts' => [['text' => $this->systemPrompt]]],
+					['role' => 'model', 'parts' => [['text' => 'Understood.']]]
+				],
+				$messages
+			);
+		}
+
 		// The last message is the new prompt, so we remove it from the history
 		// and send it in the `sendMessage` call.
 		$lastMessage = array_pop($messages);
@@ -65,10 +69,5 @@ class GeminiProvider implements ProviderInterface
 		$response = $chat->sendMessage($lastMessage['parts'][0]['text']);
 
 		return $response->text();
-	}
-
-	public function getDefaultModel(): string
-	{
-		return self::DEFAULT_MODEL;
 	}
 }

@@ -46,13 +46,12 @@ class ChatCommand extends Command
 		$gptDir = getcwd() . '/' . $name;
 		$systemPrompt = file_get_contents($gptDir . '/' . ltrim($gptConfig['system_prompt'], './'));
 
-		$messages = [
-			['role' => 'system', 'parts' => [['text' => $systemPrompt]]],
-		];
+		$provider->setSystemPrompt($systemPrompt);
 
 		$io->writeln('You can start chatting now. (type \'exit\' to quit)');
 		$io->newLine();
 
+		$messages = [];
 		while (true) {
 			$userInput = $io->ask('> ');
 
