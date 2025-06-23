@@ -6,6 +6,24 @@ A command-line interface for creating and interacting with local, file-based cus
 
 This tool is designed to be extensible, allowing you to wrap any AI API. We're launching with support for **Google Gemini**, with more providers coming soon.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [LocalGPT](#localgpt)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Installation & Configuration](#installation--configuration)
+  - [Commands](#commands)
+    - [Comnmand: `new`](#comnmand-new)
+    - [Comnmand: `chat`](#comnmand-chat)
+    - [Comnmand: `models`](#comnmand-models)
+  - [Getting Started with an Example](#getting-started-with-an-example)
+    - [1. Manual Configuration](#1-manual-configuration)
+    - [2. Chatting with the Example GPT](#2-chatting-with-the-example-gpt)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Features
 
 *   **CLI First**: No UI needed. Manage everything from your terminal.
