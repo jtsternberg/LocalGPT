@@ -9,6 +9,10 @@
 - [ ] Ollama
 - [ ] DeepSeek
 
+## PHP Library
+
+- [ ] Expose a public PHP API for using LocalGPT in your own PHP projects.
+
 ## Non-interactive Mode
 
 - [ ] Add a `-m`/`--message` and `-f`/`--messageFile` flag to the `chat` command.
