@@ -5,12 +5,16 @@ namespace LocalGPT\Provider;
 abstract class BaseProvider implements ProviderInterface
 {
 	protected $client;
+	protected string $apiKey;
 	protected $model;
 	protected $systemPrompt;
 
-	public abstract function __construct(string $apiKey);
+	public function __construct(string $apiKey)
+	{
+		$this->apiKey = $apiKey;
+	}
+
 	public abstract function listModels(): array;
-	public abstract function chat(array $messages): string;
 
 	public function setModel(string $model): void
 	{
@@ -27,4 +31,22 @@ abstract class BaseProvider implements ProviderInterface
 		$this->systemPrompt = $systemPrompt;
 	}
 
+	public function chat(array $messages): string
+	{
+
+		// The last message is the new prompt.
+		$lastMessage = array_pop($messages);
+		if (empty($lastMessage['parts'][0]['text'])) {
+			return '';
+		}
+
+		if (!empty($this->systemPrompt)) {
+			$this->client->setSystemMessage($this->systemPrompt);
+		}
+
+		// For now, we will not send the history to the LLM.
+		// We will implement this in a future step.
+
+		return $this->client->generateText($lastMessage['parts'][0]['text']);
+	}
 }

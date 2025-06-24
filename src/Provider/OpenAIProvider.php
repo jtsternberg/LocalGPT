@@ -11,6 +11,8 @@ class OpenAIProvider extends BaseProvider
 
 	public function __construct(string $apiKey)
 	{
+		parent::__construct($apiKey);
+
 		$config = new OpenAIConfig();
 		$config->apiKey = $apiKey;
 		$config->model = self::DEFAULT_MODEL;
@@ -31,24 +33,5 @@ class OpenAIProvider extends BaseProvider
 			'gpt-4-turbo',
 			'gpt-3.5-turbo',
 		];
-	}
-
-	public function chat(array $messages): string
-	{
-
-		// The last message is the new prompt.
-		$lastMessage = array_pop($messages);
-		if (empty($lastMessage['parts'][0]['text'])) {
-			return '';
-		}
-
-		if (!empty($this->systemPrompt)) {
-			$this->client->setSystemMessage($this->systemPrompt);
-		}
-
-		// For now, we will not send the history to the LLM.
-		// We will implement this in a future step.
-
-		return $this->client->generateText($lastMessage['parts'][0]['text']);
 	}
 }

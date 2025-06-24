@@ -36,7 +36,7 @@ class NewCommand extends Command
 		$providerName = $io->choice(
 			'Select a provider',
 			array_keys(ProviderFactory::SUPPORTED_PROVIDERS),
-			'openai'
+			'gemini'
 		);
 
 		$model = '';

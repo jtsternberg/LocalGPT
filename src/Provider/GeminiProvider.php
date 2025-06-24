@@ -12,6 +12,7 @@ class GeminiProvider extends BaseProvider
 
 	public function __construct(string $apiKey)
 	{
+		parent::__construct($apiKey);
 		$this->client = Gemini::client($apiKey);
 	}
 

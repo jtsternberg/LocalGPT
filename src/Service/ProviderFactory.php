@@ -2,6 +2,7 @@
 
 namespace LocalGPT\Service;
 
+use LocalGPT\Provider\AnthropicProvider;
 use LocalGPT\Provider\GeminiProvider;
 use LocalGPT\Provider\OpenAIProvider;
 use LocalGPT\Provider\ProviderInterface;
@@ -11,11 +12,7 @@ class ProviderFactory
 	public const SUPPORTED_PROVIDERS = [
 		'gemini' => GeminiProvider::class,
 		'openai' => OpenAIProvider::class,
-	];
-
-	public const MODEL_DEFAULTS = [
-		'gemini' => 'gemini-2.5-flash',
-		'openai' => 'gpt-4o-mini',
+		'anthropic' => AnthropicProvider::class,
 	];
 
 	private Config $config;

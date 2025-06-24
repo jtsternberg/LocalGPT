@@ -4,7 +4,7 @@
 
 A command-line interface for creating and interacting with local, file-based custom GPTs, powered by your favorite AI providers.
 
-This tool is designed to be extensible, allowing you to wrap any AI API. We're launching with support for **Google Gemini** and **OpenAI**, with more providers coming soon.
+This tool is designed to be extensible, allowing you to wrap any AI API. We're launching with support for **Google Gemini**, **OpenAI**, and **Anthropic**, with more providers coming soon.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -27,7 +27,7 @@ This tool is designed to be extensible, allowing you to wrap any AI API. We're l
 ## Features
 
 *   **CLI First**: No UI needed. Manage everything from your terminal.
-*   **Provider Agnostic**: Designed for extension, with support for Google Gemini and OpenAI.
+*   **Provider Agnostic**: Designed for extension, with support for Google Gemini, OpenAI, and Anthropic.
 *   **Local Configuration**: Define your custom GPTs in simple JSON files.
 *   **Interactive Chat**: Chat with your custom GPTs directly from the command line.
 *   **GPT Builder**: An interactive wizard to help you create your custom GPT configuration files.
@@ -55,7 +55,7 @@ This tool is designed to be extensible, allowing you to wrap any AI API. We're l
     # .env
     GEMINI_API_KEY="your_gemini_api_key_here"
     OPENAI_API_KEY="your_openai_api_key_here"
-    # ANTHROPIC_API_KEY="" # For future use
+    ANTHROPIC_API_KEY="your_anthropic_api_key_here"
     ```
 The CLI will automatically load the required API key based on the `provider` specified in your GPT's configuration file.
 
@@ -71,7 +71,7 @@ localgpt new my-first-gpt
 This will launch a step-by-step wizard that asks you for the following information:
 *   **Title**: A name for your GPT.
 *   **Description**: A short description of what it does.
-*   **Provider**: Select a provider from a list of supported options (e.g., `gemini` or `openai`).
+*   **Provider**: Select a provider from a list of supported options (e.g., `gemini`, `openai`, or `anthropic`).
 *   **Model**: Select a model from the chosen provider's available list.
 *   **System Prompt**: The core instructions for the GPT. This can be typed directly or pasted into the terminal. The prompt is stored in a `SYSTEM_PROMPT.md` file inside the new GPT's directory.
 
