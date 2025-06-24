@@ -2,6 +2,8 @@
 
 namespace LocalGPT\Service;
 
+use LocalGPT\Models\Config as GptConfig;
+use LocalGPT\Service\Config as ConfigService;
 use LocalGPT\Provider\AnthropicProvider;
 use LocalGPT\Provider\GeminiProvider;
 use LocalGPT\Provider\OpenAIProvider;
@@ -15,17 +17,23 @@ class ProviderFactory
 		'anthropic' => AnthropicProvider::class,
 	];
 
-	private Config $config;
+	private ConfigService $config;
 
-	public function __construct(Config $config)
+	public function __construct(ConfigService $config)
 	{
 		$this->config = $config;
 	}
 
-	public function createProvider(string $providerName): ?ProviderInterface
+	public function createProvider(GptConfig $gptConfig): ?ProviderInterface
 	{
-		$providerClass = $this->getProviderClass($providerName);
-		return new $providerClass($this->getProviderApiKey($providerName));
+		$providerName   = $gptConfig->get('provider');
+		$providerApiKey = $this->getProviderApiKey($providerName);
+		$providerClass  = $this->getProviderClass($providerName);
+
+		$provider = new $providerClass($providerApiKey);
+		$provider->setConfig($gptConfig);
+
+		return $provider;
 	}
 
 	public function getProviderClass(string $providerName): string

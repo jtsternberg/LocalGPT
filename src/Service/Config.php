@@ -15,9 +15,14 @@ class Config
 		$this->env = Dotenv::createImmutable(LOCALGPT_BASE_PATH)->load();
 	}
 
+	public function getConfigPath(string $gptName): string
+	{
+		return $this->basePath . '/' . $gptName . '/gpt.json';
+	}
+
 	public function loadGptConfig(string $gptName): array
 	{
-		$configPath = $this->basePath . '/' . $gptName . '/gpt.json';
+		$configPath = $this->getConfigPath($gptName);
 
 		if (!file_exists($configPath)) {
 			throw new \InvalidArgumentException("Configuration file not found for GPT: {$gptName}");
@@ -29,6 +34,8 @@ class Config
 		if (json_last_error() !== JSON_ERROR_NONE) {
 			throw new \RuntimeException("Error parsing JSON from {$configPath}: " . json_last_error_msg());
 		}
+
+		$config['path'] = dirname($configPath);
 
 		return $config;
 	}

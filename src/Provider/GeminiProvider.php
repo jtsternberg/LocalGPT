@@ -37,11 +37,13 @@ class GeminiProvider extends BaseProvider
 	{
 		$history = [];
 
+		$systemPrompt = $this->buildSystemPrompt();
+
 		// Prepend the system prompt to the messages.
-		if ($this->systemPrompt) {
+		if (!empty($systemPrompt)) {
 			$messages = array_merge(
 				[
-					['role' => 'user', 'parts' => [['text' => $this->systemPrompt]]],
+					['role' => 'user', 'parts' => [['text' => $systemPrompt]]],
 					['role' => 'model', 'parts' => [['text' => 'Understood.']]]
 				],
 				$messages

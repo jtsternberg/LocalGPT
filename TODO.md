@@ -16,7 +16,14 @@
 
 ## LLPhant-Related Future Enhancements
 
-- [ ] Add support for more providers via LLPhant (OpenAI, Anthropic, Groq, Ollama, DeepSeek).
+- [ ] Add support for more providers via LLPhant
+  - [X] OpenAI
+  - [X] Anthropic
+  - [ ] Groq
+  - [ ] Ollama
+  - [ ] DeepSeek
+  - [ ] Grok
+  - [ ] Grok 2
 - [ ] Expose a public PHP API for using LocalGPT, with LLPhant as the backend.
 - [ ] Add non-interactive mode to the `chat` command, using LLPhant for single-shot responses.
 - [ ] Create a "System Prompt Builder" agent using LLPhant to interactively define a GPT's persona.

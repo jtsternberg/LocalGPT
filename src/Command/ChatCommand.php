@@ -2,7 +2,8 @@
 
 namespace LocalGPT\Command;
 
-use LocalGPT\Service\Config;
+use LocalGPT\Models\Config as GptConfig;
+use LocalGPT\Service\Config as ConfigService;
 use LocalGPT\Service\ProviderFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -26,27 +27,21 @@ class ChatCommand extends Command
 	{
 		$io = new SymfonyStyle($input, $output);
 		$name = $input->getArgument('name');
-		$configService = new Config();
+		$configService = new ConfigService();
 		$providerFactory = new ProviderFactory($configService);
 
 		try {
-			$gptConfig = $configService->loadGptConfig($name);
-			$provider = $providerFactory->createProvider($gptConfig['provider']);
-			$provider->setModel($gptConfig['model']);
+			$config = new GptConfig($configService->loadGptConfig($name));
+			$provider = $providerFactory->createProvider($config);
 		} catch (\Exception $e) {
 			$io->error($e->getMessage());
 			return Command::FAILURE;
 		}
 
-		$io->writeln('Loading GPT: ' . $gptConfig['title']);
-		$io->writeln('Provider: ' . $gptConfig['provider']);
-		$io->writeln('Model: ' . $gptConfig['model']);
+		$io->writeln('Loading GPT: ' . $config->get('title'));
+		$io->writeln('Provider: ' . $config->get('provider'));
+		$io->writeln('Model: ' . $config->get('model'));
 		$io->newLine();
-
-		$gptDir = getcwd() . '/' . $name;
-		$systemPrompt = file_get_contents($gptDir . '/' . ltrim($gptConfig['system_prompt'], './'));
-
-		$provider->setSystemPrompt($systemPrompt);
 
 		$io->writeln('You can start chatting now. (type \'exit\' to quit)');
 		$io->newLine();

@@ -48,10 +48,10 @@ Maybe we could use https://github.com/llm-agents-php/agents to build an agent fo
 - [ ] Validate that the provided file paths exist.
 - [ ] Convert the file to a markdown file, and add it to the `reference-files` directory.
 - [ ] Add the relative paths to the `reference_files` array in `gpt.json`.
-- [ ] Ensure that the reference files are pre-loaded into the chat, like the persona.
-- [ ] Build a meta prompt that explains the reference files and how to use them to the LLM.
-- [ ] Implement reference file handling:
-  - [ ] **MVP:** Initially, load the full content of reference files directly into the chat context.
+- [X] Ensure that the reference files are pre-loaded into the chat, like the persona.
+- [X] Build a meta prompt that explains the reference files and how to use them to the LLM.
+- [X] Implement reference file handling:
+  - [X] **MVP:** Initially, load the full content of reference files directly into the chat context.
   - [ ] **Future:** Transition to using embeddings and a vector store for more efficient and scalable retrieval of relevant information from reference files.
     - [ ] **Note:** LLPhant's upcoming Gemini support ([PR #264](https://github.com/LLPhant/LLPhant/pull/264)) includes a `GeminiEmbeddingGenerator`. This will be key to implementing embeddings for the Gemini provider.
 
