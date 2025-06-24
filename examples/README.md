@@ -50,7 +50,7 @@ localgpt chat burger-expert-openai-gpt-3.5-turbo
 This example comes with a reference file. To see how it works, you can run:
 
 ```bash
-localgpt chat burger-expert-openai-gpt-3.5-turbo --message "Can you share with me one of your top secret recipes?"
+localgpt chat burger-expert-openai-gpt-3.5-turbo --message "Can you share with me one of your top secret recipes?" --verbose
 ```
 
 And it's response should include one of the recipes from the [reference file](./burger-expert-openai-gpt-3.5-turbo/reference-files/top-secret-recipes.md).
@@ -78,5 +78,5 @@ This example is a regional real-estate expert. It uses the Anthropic provider an
 Once you have configured your `ANTHROPIC_API_KEY` key, you can find out which region is their speciality:
 
 ```bash
-localgpt chat real-estate-anthropic-claude-3-5-sonnet-20240620 -m "What region is your speciality?"
+localgpt chat real-estate-anthropic-claude-3-5-sonnet-20240620 -m "What region is your speciality?" --verbose
 ```

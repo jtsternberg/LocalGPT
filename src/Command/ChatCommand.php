@@ -19,16 +19,20 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ChatCommand extends Command
 {
+	protected SymfonyStyle $io;
+
 	protected function configure()
 	{
 		$this->addArgument('name', InputArgument::REQUIRED, 'The name of the GPT to chat with.');
 		$this->addOption('message', 'm', InputOption::VALUE_REQUIRED, 'Send a single message and exit.');
 		$this->addOption('messageFile', 'f', InputOption::VALUE_REQUIRED, 'Send the contents of a file as a single message and exit.');
+		// Verbose seems to already be registered by Symfony, so we don't need to add it here.
+		// $this->addOption('verbose', 'v', InputOption::VALUE_NONE, 'Verbose output.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$io = new SymfonyStyle($input, $output);
+		$this->io = new SymfonyStyle($input, $output);
 		$name = $input->getArgument('name');
 		$configService = new ConfigService();
 		$providerFactory = new ProviderFactory($configService);
@@ -37,7 +41,7 @@ class ChatCommand extends Command
 			$config = new GptConfig($configService->loadGptConfig($name));
 			$provider = $providerFactory->createProvider($config);
 		} catch (\Exception $e) {
-			$io->error($e->getMessage());
+			$this->io->error($e->getMessage());
 			return Command::FAILURE;
 		}
 
@@ -48,7 +52,7 @@ class ChatCommand extends Command
 			if (file_exists($messageFile)) {
 				$message = file_get_contents($messageFile);
 			} else {
-				$io->error('The specified message file does not exist: ' . $messageFile);
+				$this->io->error('The specified message file does not exist: ' . $messageFile);
 				return Command::FAILURE;
 			}
 		}
@@ -56,27 +60,23 @@ class ChatCommand extends Command
 		if (!empty($message)) {
 			$messages[] = ['role' => 'user', 'parts' => [['text' => $message]]];
 			$response = $provider->chat($messages);
+
+			if ($input->getOption('verbose') || $input->getOption('v')) {
+				$this->printDetails($config, false);
+			}
+
 			$output->writeln($response);
 			return Command::SUCCESS;
 		}
 
-		$title = $config->get('title');
-		$description = $config->get('description');
-		if ($description) {
-			$title = $title . ' - ' . $description;
-		}
+		$this->printDetails($config);
 
-		$io->writeln('Loading GPT: ' . $title);
-		$io->writeln('Provider: ' . $config->get('provider'));
-		$io->writeln('Model: ' . $config->get('model'));
-		$io->newLine();
-
-		$io->writeln('You can start chatting now. (type \'exit\' to quit)');
-		$io->newLine();
+		$this->io->writeln('You can start chatting now. (type \'exit\' or Ctrl+C to quit)');
+		$this->io->newLine();
 
 		$messages = [];
 		while (true) {
-			$userInput = $io->ask('> ');
+			$userInput = $this->io->ask('> ');
 
 			if ($userInput === null || strtolower($userInput) === 'exit') {
 				break;
@@ -86,10 +86,25 @@ class ChatCommand extends Command
 			$response = $provider->chat($messages);
 			$messages[] = ['role' => 'model', 'parts' => [['text' => $response]]];
 
-			$io->writeln('🤖 ' . $response);
+			$this->io->writeln('🤖 ' . $response);
 		}
 
-		$io->writeln('Chat session ended.');
+		$this->io->writeln('Chat session ended.');
 		return Command::SUCCESS;
+	}
+
+	public function printDetails( GptConfig $config, $interactive = true ) {
+		$title = $config->get('title');
+		$description = $config->get('description');
+		if ($description) {
+			$title = $title . ' - ' . $description;
+		}
+
+		$verb = $interactive ? 'Loading' : 'Using';
+		$this->io->writeln($verb . ' GPT: ' . $title);
+		$this->io->writeln('Provider: ' . $config->get('provider'));
+		$this->io->writeln('Model: ' . $config->get('model'));
+		$this->io->writeln('---');
+		$this->io->newLine();
 	}
 }
