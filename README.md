@@ -4,7 +4,15 @@
 
 A command-line interface for creating and interacting with local, file-based custom GPTs, powered by your favorite AI providers.
 
-This tool is designed to be extensible, allowing you to wrap any AI API. We're launching with support for **Google Gemini**, **OpenAI**, **Anthropic**, and **Ollama**, with more providers coming soon.
+This tool is designed to be extensible, allowing you to wrap any AI API.
+
+Providers currently supported:
+- **Google Gemini**
+- **OpenAI**
+- **Anthropic**
+- **Ollama**
+
+With more providers coming soon.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
