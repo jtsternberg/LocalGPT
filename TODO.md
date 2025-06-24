@@ -13,9 +13,6 @@
    - [x] Handle system prompts as the initial message.
 - [x] Refactor `src/Command/NewCommand.php`:
    - [x] Use LLPhant's provider/model selection mechanisms.
-- [ ] Update documentation to reflect LLPhant usage (README, examples), only if necessary.
-   - [ ] Document new `.env` variables required by LLPhant.
-   - [ ] Update multi-provider support.
 
 ## LLPhant-Related Future Enhancements
 
