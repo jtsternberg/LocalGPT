@@ -2,7 +2,8 @@
 
 namespace LocalGPT\Command;
 
-use LocalGPT\Service\Config;
+use LocalGPT\Models\Config as GptConfig;
+use LocalGPT\Service\Config as ConfigService;
 use LocalGPT\Service\ProviderFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,14 +20,18 @@ class ListModelsCommand extends Command
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$io = new SymfonyStyle($input, $output);
-		$configService = new Config();
+		$configService = new ConfigService();
 		$providerFactory = new ProviderFactory($configService);
 
 		foreach (ProviderFactory::SUPPORTED_PROVIDERS as $providerName => $class) {
 			$io->section("Models for {$providerName}");
 
 			try {
-				$provider = $providerFactory->createProvider($providerName);
+				$provider = $providerFactory->createProvider(new GptConfig([
+					// Satisfy the constructor empty path check.
+					'path' => 'path',
+					'provider' => $providerName,
+				]));
 				$models = $provider->listModels();
 
 				if (empty($models)) {

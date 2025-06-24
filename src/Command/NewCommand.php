@@ -9,7 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use LocalGPT\Service\ProviderFactory;
-use LocalGPT\Service\Config;
+use LocalGPT\Models\Config as GptConfig;
+use LocalGPT\Service\Config as ConfigService;
 
 #[AsCommand(
 	name: 'new',
@@ -26,7 +27,7 @@ class NewCommand extends Command
 	{
 		$io = new SymfonyStyle($input, $output);
 		$name = $input->getArgument('name');
-		$configService = new Config();
+		$configService = new ConfigService();
 		$providerFactory = new ProviderFactory($configService);
 
 		$io->title('Create a new GPT: ' . $name);
@@ -41,7 +42,9 @@ class NewCommand extends Command
 
 		$model = '';
 		try {
-			$provider = $providerFactory->createProvider($providerName);
+			$config = new GptConfig($configService->createGptConfig($name));
+			$config->provider = $providerName;
+			$provider = $providerFactory->createProvider($config);
 			$models = $provider->listModels();
 			if (!empty($models)) {
 				$defaultModel = $provider->getDefaultModel();

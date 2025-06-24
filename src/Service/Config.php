@@ -20,6 +20,16 @@ class Config
 		return $this->basePath . '/' . $gptName . '/gpt.json';
 	}
 
+	public function createGptConfig(string $gptName): array
+	{
+		$configPath = $this->getConfigPath($gptName);
+
+		$config = [];
+		$config['path'] = dirname($configPath);
+
+		return $config;
+	}
+
 	public function loadGptConfig(string $gptName): array
 	{
 		$configPath = $this->getConfigPath($gptName);

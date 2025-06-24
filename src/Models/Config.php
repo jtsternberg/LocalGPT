@@ -128,4 +128,8 @@ class Config
 		// absolute path is ready!
 		return $abs;
 	}
+
+	public function __set( $key, $value ) {
+		$this->config[$key] = $value;
+	}
 }
