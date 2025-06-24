@@ -1,18 +1,36 @@
 # LocalGPT - TODO
 
-## Migration to LLPhant
+## Dynamic System Prompt (Replacements)
 
-- [x] Install `llphant/llphant` via Composer
-- [x] Add provider configuration to project (API keys in `.env` file)
-- [x] Refactor `src/Service/` to use LLPhant's unified API:
-   - [x] **Note**: Do not replace `ProviderFactory`, `ProviderInterface`, and `GeminiProvider`. The goal is to call the LLPhant library when applicable under the hood.
-   - [ ] Update `GeminiProvider` to use the LLPhant library internally for its chat functionality. This will likely involve using an `LLPhant\Chat\` class.
-- [x] Refactor `src/Command/ChatCommand.php`:
-   - [x] Use an LLPhant Chat instance for chat responses.
-   - [x] Pass conversation history using LLPhant's message objects.
-   - [x] Handle system prompts as the initial message.
-- [x] Refactor `src/Command/NewCommand.php`:
-   - [x] Use LLPhant's provider/model selection mechanisms.
+- [ ] **Config Model (`src/Models/Config.php`):**
+    - [ ] Add `custom_fields` property.
+    - [ ] Add `getCustomFields()` method to retrieve the configuration.
+    - [ ] Add `setCustomFieldValue(string $key, string $value)` to update/store field values at runtime.
+    - [ ] In the constructor or a loading method, correctly parse the `custom_fields` array from `gpt.json`.
+
+- [ ] **Provider (`src/Provider/BaseProvider.php`):**
+    - [ ] Add a protected property `protected array $customFieldValues = [];`.
+    - [ ] Add a public method `setCustomFieldValues(array $values)`.
+    - [ ] In `setConfig(Config $config)`, call `setCustomFieldValues()` with any values from the config.
+    - [ ] In `buildSystemPrompt()`, iterate through `$customFieldValues` and replace `{{key}}` placeholders in `$this->systemPrompt` with their corresponding values.
+
+- [ ] **Chat Command (`src/Command/ChatCommand.php`):**
+    - [ ] **Argument Parsing:**
+        - [ ] Define a new `--set` option that accepts key-value pairs (e.g., `--set pizza_region="New York"`). This option should be repeatable for multiple fields.
+        - [ ] In `execute()`, parse all `--set` arguments and store them.
+    - [ ] **Value Resolution Logic:**
+        - [ ] In `execute()`, after loading the GPT config, determine the final value for each custom field by checking in this order of priority:
+            1.  Value from `--set` command-line argument.
+            2.  Pre-defined `value` in `gpt.json`.
+            3.  Value from interactive prompt.
+            4.  `default` value from `gpt.json`.
+    - [ ] **Interactive Prompts:**
+        - [ ] For each custom field that still needs a value, prompt the user interactively.
+        - [ ] Use Symfony Question Helper's `Question` for `text` type.
+        - [ ] Use Symfony Question Helper's `ChoiceQuestion` for `dropdown` type.
+    - [ ] **Provider Integration:**
+        - [ ] Collect all final custom field values.
+        - [ ] Pass the values to the provider instance using `setCustomFieldValues()`.
 
 ## LLPhant-Related Future Enhancements
 
@@ -25,9 +43,7 @@
   - [ ] Grok
   - [ ] Grok 2
 - [ ] Expose a public PHP API for using LocalGPT, with LLPhant as the backend.
-- [x] Add non-interactive mode to the `chat` command, using LLPhant for single-shot responses.
 - [ ] Create a "System Prompt Builder" agent using LLPhant to interactively define a GPT's persona.
 - [ ] Implement reference file handling by using LLPhant's embedding and retrieval features.
 - [ ] Implement chat history persistence using LLPhant's chat history features.
-- [ ] Leverage LLPhant's core feature: structured data extraction to get typed objects back from the LLM.
-- [ ] Implement function calling by defining tools as classes and using LLPhant's features.
+
