@@ -25,7 +25,7 @@
   - [ ] Grok
   - [ ] Grok 2
 - [ ] Expose a public PHP API for using LocalGPT, with LLPhant as the backend.
-- [ ] Add non-interactive mode to the `chat` command, using LLPhant for single-shot responses.
+- [x] Add non-interactive mode to the `chat` command, using LLPhant for single-shot responses.
 - [ ] Create a "System Prompt Builder" agent using LLPhant to interactively define a GPT's persona.
 - [ ] Implement reference file handling by using LLPhant's embedding and retrieval features.
 - [ ] Implement chat history persistence using LLPhant's chat history features.

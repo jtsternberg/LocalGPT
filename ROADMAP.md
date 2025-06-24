@@ -30,9 +30,9 @@
 
 ## Non-interactive Mode
 
-- [ ] Add a `-m`/`--message` and `-f`/`--messageFile` flag to the `chat` command.
+- [x] Add a `-m`/`--message` and `-f`/`--messageFile` flag to the `chat` command.
   - The message flag is a string, and the messageFile flag is a file path to your message (e.g. a markdown file)
-- [ ] If the message flag is set, the chat will be non-interactive, and the response will be printed to the terminal.
+- [x] If the message flag is set, the chat will be non-interactive, and the response will be printed to the terminal.
 
 ## System Prompt Builder
 
