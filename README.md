@@ -30,6 +30,8 @@ This tool is designed to be extensible, allowing you to wrap any AI API. We're l
 *   **Provider Agnostic**: Designed for extension, with support for Google Gemini, OpenAI, and Anthropic.
 *   **Local Configuration**: Define your custom GPTs in simple JSON files.
 *   **Interactive Chat**: Chat with your custom GPTs directly from the command line.
+*   **Non-interactive Chat**: Send a single message or a file to a GPT without entering an interactive session.
+*   **Reference Files**: Include local files in your GPT's context to provide additional information and data.
 *   **GPT Builder**: An interactive wizard to help you create your custom GPT configuration files.
 
 ## Prerequisites
@@ -86,6 +88,22 @@ Starts an interactive chat session with a specified GPT.
 localgpt chat my-first-gpt
 ```
 
+**Non-interactive Mode**
+
+You can also send a single message or a file directly to the GPT without starting an interactive session.
+
+**Send a message:**
+```bash
+localgpt chat my-first-gpt --message "What is the capital of France?"
+```
+
+**Send a file's content:**
+```bash
+localgpt chat my-first-gpt --messageFile "path/to/your/message.md"
+```
+
+*In non-interactive mode, the response is sent directly to `stdout`.*
+
 ### Command: `models`
 Lists all available models from the supported AI providers.
 
@@ -110,7 +128,9 @@ You can create a `[name]/gpt.json` file yourself. Review the `pizza-pro/gpt.json
     "description": "Pizza lover",
     "model": "gemini-2.5-flash",
     "system_prompt": "./SYSTEM_PROMPT.md",
-    "reference_files": []
+    "reference_files": [
+        "./reference-files/pizza-toppings.md"
+    ]
 }
 ```
 
@@ -138,3 +158,23 @@ You can start chatting now. (type 'exit' to quit)
 
 🤖 The best pizza in the world is the Margherita pizza.
 >
+```
+
+## Additional Features
+
+### Reference Files
+
+You can provide your GPT with local files to use as reference material. This is useful for providing additional context.
+
+To use reference files, add a `reference_files` array to your `gpt.json` file. The array should contain a list of relative paths to the files you want to include.
+
+```json
+{
+    "reference_files": [
+        "./reference-files/my-file-1.txt",
+        "./reference-files/my-file-2.md"
+    ]
+}
+```
+
+When you start a chat session, the content of these files will be loaded and included in the system prompt that is sent to the LLM. This allows the GPT to use the information in the files to inform its responses.

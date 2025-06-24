@@ -4,5 +4,7 @@
     "description": "Pizza lover",
     "model": "gemini-2.5-flash",
     "system_prompt": "./SYSTEM_PROMPT.md",
-    "reference_files": []
+    "reference_files": [
+        "./reference-files/pizza-toppings.md"
+    ]
 }
