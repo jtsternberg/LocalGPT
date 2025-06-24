@@ -10,17 +10,18 @@ This tool is designed to be extensible, allowing you to wrap any AI API. We're l
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [LocalGPT](#localgpt)
-  - [Features](#features)
-  - [Prerequisites](#prerequisites)
-  - [Installation & Configuration](#installation--configuration)
-  - [Commands](#commands)
-    - [Command: `new`](#command-new)
-    - [Command: `chat`](#command-chat)
-    - [Command: `models`](#command-models)
-  - [Getting Started with an Example](#getting-started-with-an-example)
-    - [1. Manual Configuration](#1-manual-configuration)
-    - [2. Chatting with the Example GPT](#2-chatting-with-the-example-gpt)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation & Configuration](#installation--configuration)
+- [Commands](#commands)
+  - [Command: `new`](#command-new)
+  - [Command: `chat`](#command-chat)
+  - [Command: `models`](#command-models)
+- [Getting Started with an Example](#getting-started-with-an-example)
+  - [1. Manual Configuration](#1-manual-configuration)
+  - [2. Chatting with the Example GPT](#2-chatting-with-the-example-gpt)
+- [Additional Features](#additional-features)
+  - [Reference Files](#reference-files)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

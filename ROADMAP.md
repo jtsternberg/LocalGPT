@@ -4,13 +4,14 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [LocalGPT - Roadmap](#localgpt---roadmap)
-  - [Other Providers](#other-providers)
-  - [PHP Library](#php-library)
-  - [Non-interactive Mode](#non-interactive-mode)
-  - [System Prompt Builder](#system-prompt-builder)
-  - [Reference Files](#reference-files)
-  - [Chat History](#chat-history)
+- [Other Providers](#other-providers)
+- [PHP Library](#php-library)
+- [Dynamic System Prompt (Replacements)](#dynamic-system-prompt-replacements)
+  - [Implementation Steps](#implementation-steps)
+- [System Prompt Builder](#system-prompt-builder)
+- [Reference Files](#reference-files)
+- [Chat History](#chat-history)
+- [Function Calling](#function-calling)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
