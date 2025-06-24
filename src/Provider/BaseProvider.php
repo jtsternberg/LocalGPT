@@ -103,7 +103,6 @@ abstract class BaseProvider implements ProviderInterface
 
 			$systemMessage = "--- CUSTOM AGENT INSTRUCTIONS ---\n"
 			. "\n- The current date time is " . date('Y-m-d H:i:s')
-			. "\n- Always output math in Latex"
 			. "\n- For lists use markdown"
 			. $firstName
 			. "\n\n---\n\n"
