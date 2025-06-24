@@ -73,19 +73,42 @@ abstract class BaseProvider implements ProviderInterface
 
 	protected function buildSystemPrompt(): string
 	{
-		$systemMessage = $this->systemPrompt ?? '';
+		$systemMessage = '';
 		if (!empty($this->referenceFiles)) {
 			$systemMessage .= "\n\n--- REFERENCE MATERIALS ---\n";
 			$systemMessage .= "You have been provided with the following reference files. Use them to inform your responses.\n\n";
 			foreach ($this->referenceFiles as $file) {
-				$systemMessage .= "### " . basename($file['path']) . " ###\n";
+				$systemMessage .= "\n\n--- " . basename($file['path']) . " ---\n\n";
 				$systemMessage .= $file['content'] . "\n\n";
 			}
-			$systemMessage .= "\n\n--- END REFERENCE MATERIALS ---\n";
+			$systemMessage .= "\n\n--- / END REFERENCE MATERIALS ---\n";
+		}
+
+		if (!empty( $this->systemPrompt )) {
+			$systemMessage .= "\n\n--- SYSTEM PROMPT ---\n";
+			$systemMessage .= $this->systemPrompt;
+			$systemMessage .= "\n\n--- / END SYSTEM PROMPT ---\n";
 		}
 
 		if (!empty( $systemMessage )) {
-			$systemMessage = "--- SYSTEM PROMPT ---\n" . $systemMessage . "\n\n--- END SYSTEM PROMPT ---\n\n";
+			$firstName = '';
+			// Check if the `id` command is available for the current system.
+			exec( 'id -un', $results, $exitCode );
+			if ( $exitCode === 0 ) {
+				$firstName = trim($results[0]);
+				$firstName = ! empty( $firstName )
+					? "\n- The user's name is " . $firstName
+					: '';
+			}
+
+			$systemMessage = "--- CUSTOM AGENT INSTRUCTIONS ---\n"
+			. "\n- The current date time is " . date('Y-m-d H:i:s')
+			. "\n- Always output math in Latex"
+			. "\n- For lists use markdown"
+			. $firstName
+			. "\n\n---\n\n"
+			. $systemMessage
+			. "\n\n--- / END CUSTOM AGENT INSTRUCTIONS ---\n\n";
 		}
 
 		return $systemMessage;
