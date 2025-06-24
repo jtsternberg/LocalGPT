@@ -1,0 +1,8 @@
+{
+    "provider": "anthropic",
+    "title": "Real-estate GURU",
+    "description": "You are the foremost expert in Coastal Carolina Real-Estate",
+    "model": "claude-3-5-sonnet-20240620",
+    "system_prompt": "./SYSTEM_PROMPT.md",
+    "reference_files": []
+}

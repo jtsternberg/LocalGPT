@@ -1,0 +1,8 @@
+{
+    "provider": "ollama",
+    "title": "Music Guru",
+    "description": "You are the Spotify genius, the Apple Music Savant, the Amazon Music expert",
+    "model": "llama3:latest",
+    "system_prompt": "./SYSTEM_PROMPT.md",
+    "reference_files": []
+}

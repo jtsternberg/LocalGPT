@@ -21,15 +21,15 @@ With more providers coming soon.
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation & Configuration](#installation--configuration)
+- [Getting Started](#getting-started)
 - [Commands](#commands)
   - [Command: `new`](#command-new)
   - [Command: `chat`](#command-chat)
   - [Command: `models`](#command-models)
-- [Getting Started with an Example](#getting-started-with-an-example)
-  - [1. Manual Configuration](#1-manual-configuration)
-  - [2. Chatting with the Example GPT](#2-chatting-with-the-example-gpt)
+- [Examples](#examples)
 - [Additional Features](#additional-features)
   - [Reference Files](#reference-files)
+  - [Manual Configuration](#manual-configuration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -69,6 +69,51 @@ With more providers coming soon.
     ANTHROPIC_API_KEY="your_anthropic_api_key_here"
     ```
 The CLI will automatically load the required API key based on the `provider` specified in your GPT's configuration file.
+
+## Getting Started
+
+This guide will walk you through creating and interacting with your first custom GPT.
+
+**Step 1: Create a New GPT**
+
+Use the `new` command to start the interactive wizard:
+
+```bash
+localgpt new my-first-gpt
+```
+
+The wizard will guide you through configuring your GPT's title, description, provider, model, and system prompt.
+
+You will see a new directory created named `my-first-gpt/` with the following files:
+- `gpt.json`
+- `SYSTEM_PROMPT.md`
+- `reference-files/`
+
+If you want to modify your GPT's prompt in the future, simply edit the `SYSTEM_PROMPT.md` file.
+
+**Step 2: Chat with Your GPT**
+
+Once your GPT is created, start a chat session with the `chat` command:
+
+```bash
+localgpt chat my-first-gpt
+```
+
+You can now interact with your custom GPT directly from your terminal.
+
+To simply get a one-time response from your GPT, you can use the `chat` command with the `--message` flag:
+
+```bash
+localgpt chat my-first-gpt --message "What is the capital of France?"
+```
+(or use `--messageFile` to send a file's content as the message)
+
+**Step 3: Chat with Examples**
+
+You can also chat with one of the [examples](./examples):
+```bash
+localgpt chat examples/pizza-pro-gemini-2.5-flash
+```
 
 ## Commands
 
@@ -122,44 +167,15 @@ localgpt models
 
 *Note: For the `ollama` provider, this command will list the models you have pulled locally.*
 
-## Getting Started with an Example
+## Examples
 
-This repository includes a `pizza-pro` example to help you get started quickly.
-
-### 1. Manual Configuration
-
-You can create a `[name]/gpt.json` file yourself. Review the `pizza-pro/gpt.json` file for an example of the structure.
-
-[**`pizza-pro/gpt.json`**](https://github.com/jtsternberg/LocalGPT/blob/main/pizza-pro/gpt.json)
-
-```json
-{
-    "provider": "gemini",
-    "title": "Pizza Pro",
-    "description": "Pizza lover",
-    "model": "gemini-2.5-flash",
-    "system_prompt": "./SYSTEM_PROMPT.md",
-    "reference_files": [
-        "./reference-files/pizza-toppings.md"
-    ]
-}
-```
-
-### 2. Chatting with the Example GPT
-
-Once you have configured your API key, you can start a chat session with the `pizza-pro` example.
-
-```bash
-localgpt chat pizza-pro
-```
-
-This will start an interactive chat session with the pre-configured pizza expert.
+This repository includes several [examples](./examples) to help you get started. Checkout the [README](./examples#readme) for more information.
 
 **Example Session:**
 
 ```
-$ localgpt chat pizza-pro
-Loading GPT: Pizza Pro
+$ localgpt chat examples/pizza-pro-gemini-2.5-flash
+Loading GPT: Pizza Pro - Lover of all things pizza
 Provider: gemini
 Model: gemini-2.5-flash
 
@@ -189,3 +205,7 @@ To use reference files, add a `reference_files` array to your `gpt.json` file. T
 ```
 
 When you start a chat session, the content of these files will be loaded and included in the system prompt that is sent to the LLM. This allows the GPT to use the information in the files to inform its responses.
+
+### Manual Configuration
+
+You can create a `[name]/gpt.json` file yourself. Review the [`examples/pizza-pro-gemini-2.5-flash/gpt.json` file](./examples/pizza-pro-gemini-2.5-flash/gpt.json) for an example of the structure.
