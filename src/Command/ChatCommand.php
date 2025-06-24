@@ -60,7 +60,13 @@ class ChatCommand extends Command
 			return Command::SUCCESS;
 		}
 
-		$io->writeln('Loading GPT: ' . $config->get('title'));
+		$title = $config->get('title');
+		$description = $config->get('description');
+		if ($description) {
+			$title = $title . ' - ' . $description;
+		}
+
+		$io->writeln('Loading GPT: ' . $title);
 		$io->writeln('Provider: ' . $config->get('provider'));
 		$io->writeln('Model: ' . $config->get('model'));
 		$io->newLine();
