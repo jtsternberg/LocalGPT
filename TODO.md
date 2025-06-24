@@ -38,7 +38,7 @@
   - [X] OpenAI
   - [X] Anthropic
   - [ ] Groq
-  - [ ] Ollama
+  - [X] Ollama
   - [ ] DeepSeek
   - [ ] Grok
   - [ ] Grok 2

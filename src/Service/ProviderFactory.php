@@ -7,14 +7,16 @@ use LocalGPT\Service\Config as ConfigService;
 use LocalGPT\Provider\AnthropicProvider;
 use LocalGPT\Provider\GeminiProvider;
 use LocalGPT\Provider\OpenAIProvider;
+use LocalGPT\Provider\OllamaProvider;
 use LocalGPT\Provider\ProviderInterface;
 
 class ProviderFactory
 {
 	public const SUPPORTED_PROVIDERS = [
-		'gemini' => GeminiProvider::class,
-		'openai' => OpenAIProvider::class,
+		'gemini'    => GeminiProvider::class,
+		'openai'    => OpenAIProvider::class,
 		'anthropic' => AnthropicProvider::class,
+		'ollama'    => OllamaProvider::class,
 	];
 
 	private ConfigService $config;
@@ -47,7 +49,13 @@ class ProviderFactory
 
 	public function getProviderApiKey(string $providerName): string
 	{
+		// Ollama does not need an API key.
+		if ($providerName === 'ollama') {
+			return $providerName;
+		}
+
 		$apiKey = $this->config->getApiKey($providerName);
+
 		if (!$apiKey) {
 			throw new \Exception("API key for {$providerName} not found in .env file.");
 		}

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2024-07-24
+
+### Added
+
+- Support for the Ollama provider, allowing interaction with locally running models.
+
+### Changed
+
+- The `list-models` command dynamically lists models available from a running Ollama instance.
+
 ## [1.2.0] - 2024-07-24
 
 ### Added

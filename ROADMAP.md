@@ -15,14 +15,14 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Other Providers
+## Providers
 
-- [ ] OpenAI
-- [ ] Anthropic
-- [ ] Gemini
+- [X] OpenAI
+- [X] Anthropic
+- [X] Gemini
   - [ ] Refactor `GeminiProvider` to use `LLPhant\Chat\GeminiChat` once [PR #264](https://github.com/LLPhant/LLPhant/pull/264) is merged and released.
 - [ ] Groq
-- [ ] Ollama
+- [x] Ollama
 - [ ] DeepSeek
 
 ## PHP Library
