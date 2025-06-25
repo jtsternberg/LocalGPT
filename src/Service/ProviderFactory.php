@@ -28,14 +28,18 @@ class ProviderFactory
 
 	public function createProvider(GptConfig $gptConfig): ?ProviderInterface
 	{
-		$providerName   = $gptConfig->get('provider');
-		$providerApiKey = $this->getProviderApiKey($providerName);
-		$providerClass  = $this->getProviderClass($providerName);
-
-		$provider = new $providerClass($providerApiKey);
+		$provider = $this->createProviderByName($gptConfig->getProvider());
 		$provider->setConfig($gptConfig);
 
 		return $provider;
+	}
+
+	public function createProviderByName(string $providerName): ?ProviderInterface
+	{
+		$providerApiKey = $this->getProviderApiKey($providerName);
+		$providerClass  = $this->getProviderClass($providerName);
+
+		return new $providerClass($providerApiKey);
 	}
 
 	public function getProviderClass(string $providerName): string

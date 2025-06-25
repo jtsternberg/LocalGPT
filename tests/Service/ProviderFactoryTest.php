@@ -56,12 +56,7 @@ class ProviderFactoryTest extends TestCase
     {
         // Mock GptConfig
         $gptConfigMock = $this->createMock(GptConfig::class);
-        $gptConfigMock->method('get')->willReturnMap([
-            ['provider', 'gemini'],
-            ['model', 'test-model'],
-            ['system_prompt', ''],
-            ['reference_files', []],
-        ]);
+        $gptConfigMock->method('getProvider')->willReturn('gemini');
 
         // Mock ConfigService dependency for API key
         $this->configServiceMock->method('getApiKey')->with('gemini')->willReturn('test-api-key');
@@ -75,12 +70,7 @@ class ProviderFactoryTest extends TestCase
     {
         // Mock GptConfig
         $gptConfigMock = $this->createMock(GptConfig::class);
-        $gptConfigMock->method('get')->willReturnMap([
-            ['provider', 'ollama'],
-            ['model', 'test-model'],
-            ['system_prompt', ''],
-            ['reference_files', []],
-        ]);
+        $gptConfigMock->method('getProvider')->willReturn('ollama');
 
         $provider = $this->providerFactory->createProvider($gptConfigMock);
 
