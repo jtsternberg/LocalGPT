@@ -6,3 +6,4 @@ alwaysApply: true
 * Always use .editorconfig when creating new PHP files!
 * Always create a test file FIRST with the failing tests, THEN create the actual (new) class/method.
    * Run tests after code is written.
+* Be sure to update the [README.md](mdc:README.md), [ROADMAP.md](mdc:ROADMAP.md), [TODO.md](mdc:TODO.md) with corresponding changes in the code.
