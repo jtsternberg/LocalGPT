@@ -78,7 +78,7 @@ class ConfigTest extends TestCase
 
 	public function testGetters()
 	{
-		$this->assertEquals('test-gpt-model', $this->config->getName());
+		$this->assertEquals($this->testDir, $this->config->getName());
 		$this->assertEquals($this->testDir, $this->config->getPath());
 		$this->assertEquals('test-provider', $this->config->getProvider());
 		$this->assertEquals('test-model', $this->config->getModel());
@@ -117,7 +117,7 @@ class ConfigTest extends TestCase
 	{
 		// Test __get
 		$this->assertEquals('test-model', $this->config->model);
-		$this->assertEquals('test-gpt-model', $this->config->name);
+		$this->assertEquals($this->testDir, $this->config->name);
 		$this->assertNull($this->config->nonexistent);
 
 		// Test __set

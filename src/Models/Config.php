@@ -13,7 +13,7 @@ class Config
 			$config = print_r($this->config, true);
 			throw new \InvalidArgumentException("Configuration file invalid: {$config}");
 		}
-		$this->name = basename($this->config['path']);
+		$this->name = str_replace(getcwd() . '/', '', $this->config['path']);
 	}
 
 	public function get(string $key): mixed
