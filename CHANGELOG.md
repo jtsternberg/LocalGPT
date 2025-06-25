@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2024-07-25
+
+### Added
+
+- Integrate with [Models.dev](https://models.dev/) to provide detailed information about AI models, including pricing, context windows, and capabilities.
+- A comprehensive test suite using PHPUnit to improve code quality and reliability.
+- New `reference` command to easily manage reference files for your GPTs (`--list`, `--add`, `--delete`).
+- Add model validation during the `new` command's interactive wizard to ensure selected models exist.
+- Extensive examples for each supported provider in the new `examples/` directory.
+- Minor additional improvements.
+
+### Changed
+
+- The `models` command is now powered by Models.dev and includes new options:
+  - Pass a model ID (e.g., `localgpt models gpt-4o-mini`) to view detailed information.
+  - Filter by provider using the `--provider` (`-p`) flag.
+  - Get more detailed output with the `--verbose` (`-v`) flag.
+- Refactored all commands (`new`, `chat`, `models`, `reference`) to be more robust and testable through dependency injection.
+- Improved `README.md` with better getting-started instructions and a dedicated examples section.
+- `OllamaProvider` now gracefully handles cases where the Ollama service is not running.
+
 ## [1.3.0] - 2024-07-24
 
 ### Added
