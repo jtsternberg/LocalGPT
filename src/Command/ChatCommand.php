@@ -20,6 +20,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ChatCommand extends Command
 {
+	use VerboseCommandTrait;
+
 	protected GptConfig $config;
 	protected ProviderInterface $provider;
 	protected SymfonyStyle $io;
@@ -28,9 +30,10 @@ class ChatCommand extends Command
 	public function __construct(
 		protected ?ConfigService $configService = null,
 		protected ?ProviderFactory $providerFactory = null,
-		protected bool $verbose = false
+		bool $verbose = false
 	) {
 		parent::__construct();
+		$this->verbose         = $verbose;
 		$this->configService   = $this->configService ?? new ConfigService();
 		$this->providerFactory = $this->providerFactory ?? new ProviderFactory($this->configService);
 	}
@@ -40,21 +43,14 @@ class ChatCommand extends Command
 		$this->addArgument('name', InputArgument::REQUIRED, 'The name of the GPT to chat with.');
 		$this->addOption('message', 'm', InputOption::VALUE_REQUIRED, 'Send a single message and exit.');
 		$this->addOption('messageFile', 'f', InputOption::VALUE_REQUIRED, 'Send the contents of a file as a single message and exit.');
-		// Verbose seems to already be registered by Symfony, so we don't need to add it here.
-		// $this->addOption('verbose', 'v', InputOption::VALUE_NONE, 'Verbose output.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$this->io = new SymfonyStyle($input, $output);
-		$name = $input->getArgument('name');
+		$this->setVerbose($input);
 
-		try {
-			if ($input->getOption('verbose') || $input->getOption('v')) {
-				$this->verbose = true;
-			}
-		} catch (\Exception $e) {
-		}
+		$name = $input->getArgument('name');
 
 		try {
 			$this->config   = new GptConfig($this->configService->loadGptConfig($name));
