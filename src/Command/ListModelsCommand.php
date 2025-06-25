@@ -2,7 +2,7 @@
 
 namespace LocalGPT\Command;
 
-use LocalGPT\Models\Config as GptConfig;
+use LocalGPT\Exceptions;
 use LocalGPT\Service\Config as ConfigService;
 use LocalGPT\Service\ProviderFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -13,36 +13,38 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
 	name: 'models',
-	description: 'Lists available models for a provider.'
+	description: 'Lists all available models from supported AI providers.'
 )]
 class ListModelsCommand extends Command
 {
+	public function __construct(protected ?ProviderFactory $providerFactory = null, protected ?ConfigService $configService = null)
+	{
+		parent::__construct();
+		$this->configService   = $this->configService ?? new ConfigService();
+		$this->providerFactory = $this->providerFactory ?? new ProviderFactory($this->configService);
+	}
+
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$io = new SymfonyStyle($input, $output);
-		$configService = new ConfigService();
-		$providerFactory = new ProviderFactory($configService);
+		$io->title('Available Models');
 
-		foreach (ProviderFactory::SUPPORTED_PROVIDERS as $providerName => $class) {
-			$io->section("Models for {$providerName}");
-
+		foreach (array_keys(ProviderFactory::SUPPORTED_PROVIDERS) as $providerName) {
 			try {
-				$provider = $providerFactory->createProvider(new GptConfig([
-					// Satisfy the constructor empty path check.
-					'path' => 'path',
-					'provider' => $providerName,
-				]));
-				$models = $provider->listModels();
+				$providerInstance = $this->providerFactory->createProviderByName($providerName);
+				$models           = $providerInstance->listModels();
 
 				if (empty($models)) {
 					$io->warning("No models found for the {$providerName} provider.");
 					continue;
 				}
 
+				$io->section(ucfirst($providerName) . ' Models');
 				$io->listing($models);
-
+			} catch (Exceptions\MissingProviderApiKeyException $e) {
+				// Ignore these.
 			} catch (\Exception $e) {
-				$io->error("An error occurred while fetching models for {$providerName}: " . $e->getMessage());
+				$io->warning(ucfirst($providerName) . ': ' . $e->getMessage());
 			}
 		}
 

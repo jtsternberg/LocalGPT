@@ -9,6 +9,7 @@ use LocalGPT\Provider\GeminiProvider;
 use LocalGPT\Provider\OpenAIProvider;
 use LocalGPT\Provider\OllamaProvider;
 use LocalGPT\Provider\ProviderInterface;
+use LocalGPT\Exceptions;
 
 class ProviderFactory
 {
@@ -61,7 +62,7 @@ class ProviderFactory
 		$apiKey = $this->config->getApiKey($providerName);
 
 		if (!$apiKey) {
-			throw new \Exception("API key for {$providerName} not found in .env file.");
+			throw new Exceptions\MissingProviderApiKeyException($providerName);
 		}
 		return $apiKey;
 	}
