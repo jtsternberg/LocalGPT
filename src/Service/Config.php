@@ -7,12 +7,12 @@ use Dotenv\Dotenv;
 class Config
 {
 	protected $basePath;
-	protected $env;
+	protected static $env;
 
 	public function __construct()
 	{
 		$this->basePath = getcwd();
-		$this->env = Dotenv::createImmutable(LOCALGPT_BASE_PATH)->load();
+		self::$env = self::$env ?? Dotenv::createImmutable(LOCALGPT_BASE_PATH)->load();
 	}
 
 	public function getOrCreateConfigDir(string $gptName): string
@@ -165,6 +165,6 @@ class Config
 	public function getApiKey(string $provider): ?string
 	{
 		$keyName = strtoupper($provider) . '_API_KEY';
-		return $this->env[$keyName] ?? null;
+		return self::$env[$keyName] ?? null;
 	}
 }
