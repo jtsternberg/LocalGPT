@@ -8,6 +8,7 @@ use LLPhant\OllamaConfig;
 class OllamaProvider extends BaseProvider
 {
 	public const DEFAULT_MODEL = 'llama3:latest';
+	protected $name = 'ollama';
 	private OllamaConfig $config;
 
 	public function __construct(string $apiKey, ?OllamaChat $client = null)
@@ -81,5 +82,15 @@ class OllamaProvider extends BaseProvider
 			return [];
 		}
 		return $output;
+	}
+
+	public function getModelDetails(string $modelId): string
+	{
+		exec( 'ollama show ' . $modelId, $output, $exitCode );
+		if ($exitCode !== 0) {
+			// TODO: output a warning, since it looks like ollama is not running.
+			return '';
+		}
+		return implode("\n", $output);
 	}
 }

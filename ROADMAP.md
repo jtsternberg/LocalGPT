@@ -27,26 +27,6 @@
   - [ ] Enable port config option in the config json file, since ollama could be running on a different port.
 - [ ] DeepSeek
 
-## Integrate with Models.dev
-
-**Why Models.dev?**
-Models.dev is an open-source database of AI models that provides comprehensive model specifications, pricing, and capabilities for 200+ models across 20+ providers. It offers:
-- Real-time model data via API (`https://models.dev/api.json`)
-- Standardized model IDs compatible with AI SDK
-- Detailed specifications (context limits, pricing, capabilities, release dates)
-- Community-maintained and up-to-date information
-
-**Implementation Tasks:**
-- [ ] Leverage the [Models.dev](https://models.dev/) API to dynamically fetch and update the list of available models for each provider.
-  - [ ] Create a caching mechanism to store the model data locally to avoid excessive API calls.
-  - [ ] Update the `models` command to list available models without excessive detail by default.
-  - [ ] Add a `--provider` option to the `models` command to filter the list by a specific provider.
-  - [ ] Allow passing a model ID to the `models` command (e.g., `localgpt models <model-id>`) to display richer information, such as context window size, pricing, and release date.
-  - [ ] Add a `--verbose` option to the `models` command to output additional details in a CLI-friendly format (e.g., a vertical list).
-  - [ ] In the `new` command's interactive wizard, during model selection, display a hint: `(hint: use localgpt models <model-id> for more information about that model!)`.
-  - [ ] Add model validation during GPT creation to ensure selected models exist and are supported.
-  - [ ] Show model capabilities (tool calling, reasoning, attachments) in model selection interfaces.
-
 ## PHP Library
 
 - [ ] Expose a public PHP API for using LocalGPT in your own PHP projects.

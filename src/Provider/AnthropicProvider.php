@@ -8,6 +8,7 @@ use LLPhant\AnthropicConfig;
 class AnthropicProvider extends BaseProvider
 {
 	public const DEFAULT_MODEL = 'claude-3-5-sonnet-20240620';
+	protected $name = 'anthropic';
 
 	public function __construct(string $apiKey, ?AnthropicChat $client = null)
 	{

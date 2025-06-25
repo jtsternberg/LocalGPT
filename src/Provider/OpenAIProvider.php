@@ -8,6 +8,7 @@ use LLPhant\OpenAIConfig;
 class OpenAIProvider extends BaseProvider
 {
 	public const DEFAULT_MODEL = 'gpt-4o-mini';
+	protected $name = 'openai';
 
 	public function __construct(string $apiKey, ?OpenAIChat $client = null)
 	{

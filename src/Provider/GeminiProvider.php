@@ -9,6 +9,7 @@ use Gemini\Enums\Role;
 class GeminiProvider extends BaseProvider
 {
 	public const DEFAULT_MODEL = 'gemini-2.5-flash';
+	protected $name = 'gemini';
 
 	public function __construct(string $apiKey)
 	{

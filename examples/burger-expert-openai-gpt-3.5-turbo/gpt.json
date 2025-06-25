@@ -2,7 +2,7 @@
     "provider": "openai",
     "title": "Burger Expert",
     "description": "All things burger!",
-    "model": "gpt-3.5-turbo",
+    "model": "gpt-4o-mini",
     "system_prompt": "./SYSTEM_PROMPT.md",
     "reference_files": [
         "./reference-files/top-secret-recipes.md"
