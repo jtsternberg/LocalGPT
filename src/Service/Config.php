@@ -76,6 +76,7 @@ class Config
 	public function saveGptConfig(string $gptName, array $config)
 	{
 		unset($config['path']);
+		$this->getOrCreateConfigDir($gptName);
 		$configPath = $this->getConfigPath($gptName);
 		$json = json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 		file_put_contents($configPath, $json);
@@ -85,7 +86,7 @@ class Config
 
 	public function saveSystemPrompt(string $gptName, string $systemPrompt)
 	{
-		$systemPromptPath = $this->getConfigDir($gptName) . '/SYSTEM_PROMPT.md';
+		$systemPromptPath = $this->getOrCreateConfigDir($gptName) . '/SYSTEM_PROMPT.md';
 		file_put_contents($systemPromptPath, $systemPrompt);
 
 		return $this;
