@@ -9,12 +9,14 @@ use Symfony\Component\Console\Application;
 use LocalGPT\Command\NewCommand;
 use LocalGPT\Command\ChatCommand;
 use LocalGPT\Command\ListModelsCommand;
+use LocalGPT\Command\ReferenceCommand;
 
 $application = new Application('LocalGPT', '1.0.0');
 
 $application->add(new NewCommand());
 $application->add(new ChatCommand());
 $application->add(new ListModelsCommand());
+$application->add(new ReferenceCommand());
 
 // ... register commands here in the future
 

@@ -2,19 +2,28 @@
 
 namespace LocalGPT\Models;
 
+use LocalGPT\Service\Utils;
+
 class Config
 {
+	protected $name;
 	public function __construct(protected array $config)
 	{
 		if (empty($this->config['path'])) {
 			$config = print_r($this->config, true);
 			throw new \InvalidArgumentException("Configuration file invalid: {$config}");
 		}
+		$this->name = basename($this->config['path']);
 	}
 
 	public function get(string $key): mixed
 	{
 		return $this->config[$key] ?? null;
+	}
+
+	public function getName(): string
+	{
+		return $this->name;
 	}
 
 	public function getPath(): string
@@ -44,7 +53,7 @@ class Config
 			return '';
 		}
 
-		$systemPrompt = file_get_contents($this->convertPathToAbsolute($systemPrompt));
+		$systemPrompt = file_get_contents(Utils::convertPathToAbsolute($systemPrompt, $this->getPath()));
 
 		return trim($systemPrompt);
 	}
@@ -56,7 +65,7 @@ class Config
 
 	protected function getReferenceFileData(string $path): array
 	{
-		$absolutePath = $this->convertPathToAbsolute($path);
+		$absolutePath = Utils::convertPathToAbsolute($path, $this->getPath());
 		if (is_file($absolutePath) && is_readable($absolutePath)) {
 			return [
 				'path' => $absolutePath,
@@ -83,53 +92,15 @@ class Config
 		return $files;
 	}
 
-	/**
-	 * Convert a path to an absolute path.
-	 *
-	 * @param  string $filename The path to convert.
-	 * @param  string $base     Optional base path. Defaults to working directory.
-	 *
-	 * @return string The absolute path.
-	 */
-	protected function convertPathToAbsolute( $filename, $base = null ) {
-		$base = null === $base ? $this->getPath() : $base;
-		if ( '/' !== strrev($base) ) {
-			$base .= '/';
-		}
-
-		$filename = str_replace( '~', getenv( 'HOME' ), $filename );
-
-		// return if already absolute
-		if (parse_url($filename, PHP_URL_SCHEME) != '') {
-			return $filename;
-		}
-
-		// parse base:
-		$bits = parse_url($base);
-
-		// remove non-directory element from path
-		$path = preg_replace('#/[^/]*$#', '', $bits['path']);
-
-		// destroy path if relative path points to root
-		if ($filename[0] == '/') {
-			$path = '';
-		}
-
-		// dirty absolute path
-		$abs = "$path/$filename";
-
-		// replace '//' or '/./' or '/foo/../' with '/'
-		$re = array('#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#');
-		for(
-			$n = 1; $n > 0;
-			$abs = preg_replace( $re, '/', $abs, -1, $n )
-		) {}
-
-		// absolute path is ready!
-		return $abs;
-	}
-
 	public function __set( $key, $value ) {
 		$this->config[$key] = $value;
+	}
+
+	public function __get( $key ) {
+		if ('name' === $key) {
+			return $this->name;
+		}
+
+		return $this->config[$key] ?? null;
 	}
 }

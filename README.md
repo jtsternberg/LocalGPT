@@ -26,6 +26,7 @@ With more providers coming soon.
   - [Command: `new`](#command-new)
   - [Command: `chat`](#command-chat)
   - [Command: `models`](#command-models)
+  - [Command: `reference`](#command-reference)
 - [Examples](#examples)
 - [Additional Features](#additional-features)
   - [Reference Files](#reference-files)
@@ -166,6 +167,30 @@ localgpt models
 ```
 
 *Note: For the `ollama` provider, this command will list the models you have pulled locally.*
+
+### Command: `reference`
+Adds, removes, or lists reference files for a specified GPT.
+
+```bash
+localgpt reference my-first-gpt <file-path>
+```
+
+**List reference files:**
+```bash
+localgpt reference my-first-gpt --list
+```
+
+**Add a reference file:**
+```bash
+localgpt reference my-first-gpt ./path/to/your/file.md
+```
+
+**Remove a reference file:**
+```bash
+localgpt reference my-first-gpt --delete ./reference-files/file.md
+```
+
+This command will copy the specified file to the GPT's `reference-files` directory and update the `gpt.json` configuration.
 
 ## Examples
 

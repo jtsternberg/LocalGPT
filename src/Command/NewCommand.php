@@ -67,28 +67,19 @@ class NewCommand extends Command
 
 		$systemPrompt = $io->ask('Enter the system prompt');
 
-		$gptDir = getcwd() . '/' . $name;
-		if (!is_dir($gptDir)) {
-			mkdir($gptDir, 0777, true);
-		}
+		$configService->getOrCreateConfigDir($name);
+		$configService->getOrCreateReferenceDir($name);
 
-		$refDir = $gptDir . '/reference-files';
-		if (!is_dir($refDir)) {
-			mkdir($refDir, 0777, true);
-		}
-
-		file_put_contents($gptDir . '/SYSTEM_PROMPT.md', $systemPrompt);
-
-		$config = [
-			'provider' => $providerName,
-			'title' => $title,
-			'description' => $description,
-			'model' => $model,
-			'system_prompt' => './SYSTEM_PROMPT.md',
-			'reference_files' => [],
-		];
-
-		file_put_contents($gptDir . '/gpt.json', json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+		$configService
+			->saveSystemPrompt($name, $systemPrompt)
+			->saveGptConfig($name, [
+				'provider' => $providerName,
+				'title' => $title,
+				'description' => $description,
+				'model' => $model,
+				'system_prompt' => './SYSTEM_PROMPT.md',
+				'reference_files' => [],
+			]);
 
 		$io->success("GPT '{$name}' created successfully.");
 

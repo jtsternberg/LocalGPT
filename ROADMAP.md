@@ -94,11 +94,6 @@ Maybe we could use https://github.com/llm-agents-php/agents to build an agent fo
   - [X] **MVP:** Initially, load the full content of reference files directly into the chat context.
   - [ ] **Future:** Transition to using embeddings and a vector store for more efficient and scalable retrieval of relevant information from reference files.
     - [ ] **Note:** LLPhant's upcoming Gemini support ([PR #264](https://github.com/LLPhant/LLPhant/pull/264)) includes a `GeminiEmbeddingGenerator`. This will be key to implementing embeddings for the Gemini provider.
-- [ ] `reference {gpt-id} <file-path>` command to add a reference file to a GPT.
-    - This will copy the file to the `reference-files` directory, and add the relative path to the `reference_files` array in `gpt.json`.
-    - `-d`/`--delete` flag to remove a reference file from the GPT.
-    - `-l`/`--list` flag to list all reference files for a GPT.
-
 
 ## Chat History
 
