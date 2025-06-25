@@ -1,0 +1,8 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+* Always use .editorconfig when creating new PHP files!
+* Always create a test file FIRST with the failing tests, THEN create the actual (new) class/method.
+   * Run tests after code is written.
