@@ -23,6 +23,7 @@
   - [ ] Refactor `GeminiProvider` to use `LLPhant\Chat\GeminiChat` once [PR #264](https://github.com/LLPhant/LLPhant/pull/264) is merged and released.
 - [ ] Groq
 - [x] Ollama
+  - [ ] Enable port config option in the config json file, since ollama could be running on a different port.
 - [ ] DeepSeek
 
 ## PHP Library
