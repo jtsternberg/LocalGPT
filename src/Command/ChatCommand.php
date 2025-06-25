@@ -2,9 +2,10 @@
 
 namespace LocalGPT\Command;
 
-use LocalGPT\Models\Config as GptConfig;
 use LocalGPT\Service\Config as ConfigService;
+use LocalGPT\Models\Config as GptConfig;
 use LocalGPT\Service\ProviderFactory;
+use LocalGPT\Provider\ProviderInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,11 +16,24 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
 	name: 'chat',
-	description: 'Starts a chat session with a specified GPT.'
+	description: 'Starts a chat with a GPT.'
 )]
 class ChatCommand extends Command
 {
+	protected GptConfig $config;
+	protected ProviderInterface $provider;
 	protected SymfonyStyle $io;
+	protected InputInterface $input;
+
+	public function __construct(
+		protected ?ConfigService $configService = null,
+		protected ?ProviderFactory $providerFactory = null,
+		protected bool $verbose = false
+	) {
+		parent::__construct();
+		$this->configService   = $this->configService ?? new ConfigService();
+		$this->providerFactory = $this->providerFactory ?? new ProviderFactory($this->configService);
+	}
 
 	protected function configure()
 	{
@@ -34,50 +48,63 @@ class ChatCommand extends Command
 	{
 		$this->io = new SymfonyStyle($input, $output);
 		$name = $input->getArgument('name');
-		$configService = new ConfigService();
-		$providerFactory = new ProviderFactory($configService);
 
 		try {
-			$config = new GptConfig($configService->loadGptConfig($name));
-			$provider = $providerFactory->createProvider($config);
+			if ($input->getOption('verbose') || $input->getOption('v')) {
+				$this->verbose = true;
+			}
+		} catch (\Exception $e) {
+		}
+
+		try {
+			$this->config   = new GptConfig($this->configService->loadGptConfig($name));
+			$this->provider = $this->providerFactory->createProvider($this->config);
+
+			if ($message = $input->getOption('message')) {
+				$this->handleSingleMessage($message);
+			} elseif ($messageFile = $input->getOption('messageFile')) {
+				$this->handleMessageFile($messageFile);
+			} else {
+				$this->handleInteractiveChat();
+			}
 		} catch (\Exception $e) {
 			$this->io->error($e->getMessage());
 			return Command::FAILURE;
 		}
 
-		$message = $input->getOption('message');
-		$messageFile = $input->getOption('messageFile');
+		return Command::SUCCESS;
+	}
 
-		if (!empty($messageFile)) {
-			if (file_exists($messageFile)) {
-				$message = file_get_contents($messageFile);
-			} else {
-				$this->io->error('The specified message file does not exist: ' . $messageFile);
-				return Command::FAILURE;
+	protected function handleSingleMessage(string $message): void
+	{
+		$messages[] = ['role' => 'user', 'parts' => [['text' => $message]]];
+		$response = $this->provider->chat($messages);
+
+		try {
+			if ($this->verbose) {
+				$this->printDetails(false);
 			}
+		} catch (\Exception $e) {
 		}
 
-		if (!empty($message)) {
-			$messages[] = ['role' => 'user', 'parts' => [['text' => $message]]];
-			$response = $provider->chat($messages);
+		$this->io->writeln($response);
+	}
 
-			try {
-				if ($input->getOption('verbose') || $input->getOption('v')) {
-					$this->printDetails($config, false);
-				}
-			} catch (\Exception $e) {
-			}
-
-			$output->writeln($response);
-			return Command::SUCCESS;
+	protected function handleMessageFile(string $filePath): void
+	{
+		if (!file_exists($filePath)) {
+			throw new \InvalidArgumentException("File not found: {$filePath}");
 		}
 
-		$this->printDetails($config);
+		$message = file_get_contents($filePath);
+		$this->handleSingleMessage($message);
+	}
+
+	protected function handleInteractiveChat(): void
+	{
+		$this->printDetails();
 
 		$this->io->writeln('You can start chatting now. (type \'exit\' or Ctrl+C to quit)');
-		$this->io->newLine();
-
-		$messages = [];
 		while (true) {
 			$userInput = $this->io->ask('> ');
 
@@ -86,28 +113,29 @@ class ChatCommand extends Command
 			}
 
 			$messages[] = ['role' => 'user', 'parts' => [['text' => $userInput]]];
-			$response = $provider->chat($messages);
+			$response = $this->provider->chat($messages);
 			$messages[] = ['role' => 'model', 'parts' => [['text' => $response]]];
 
+			$this->io->writeln('');
 			$this->io->writeln('🤖 ' . $response);
 		}
 
 		$this->io->writeln('Chat session ended.');
-		return Command::SUCCESS;
 	}
 
-	public function printDetails( GptConfig $config, $interactive = true ) {
-		$title = $config->get('title');
-		$description = $config->get('description');
+	public function printDetails( $interactive = true ) {
+		$title = $this->config->get('title');
+		$description = $this->config->get('description');
 		if ($description) {
 			$title = $title . ' - ' . $description;
 		}
 
 		$verb = $interactive ? 'Loading' : 'Using';
 		$this->io->writeln($verb . ' GPT: ' . $title);
-		$this->io->writeln('Provider: ' . $config->get('provider'));
-		$this->io->writeln('Model: ' . $config->get('model'));
+		$this->io->writeln('Provider: ' . $this->config->get('provider'));
+		$this->io->writeln('Model: ' . $this->config->get('model'));
 		$this->io->writeln('---');
 		$this->io->newLine();
 	}
+
 }
