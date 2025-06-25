@@ -2,87 +2,110 @@
 
 namespace LocalGPT\Command;
 
+use LocalGPT\Service\Config as ConfigService;
+use LocalGPT\Service\ProviderFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use LocalGPT\Service\ProviderFactory;
-use LocalGPT\Models\Config as GptConfig;
-use LocalGPT\Service\Config as ConfigService;
 
 #[AsCommand(
 	name: 'new',
-	description: 'Creates a new GPT configuration.'
+	description: 'Creates a new GPT configuration via an interactive wizard.'
 )]
 class NewCommand extends Command
 {
+	protected string $gptName;
+	protected array $config = [];
+	protected SymfonyStyle $io;
+
+	public function __construct(
+		protected ?ConfigService $configService = null,
+		protected ?ProviderFactory $providerFactory = null
+	) {
+		parent::__construct();
+		$this->configService   = $this->configService ?? new ConfigService();
+		$this->providerFactory = $this->providerFactory ?? new ProviderFactory($this->configService);
+	}
+
 	protected function configure()
 	{
-		$this->addArgument('name', InputArgument::REQUIRED, 'The name of the GPT to create.');
+		$this->addArgument('name', InputArgument::REQUIRED, 'The name for the new GPT config directory.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$io = new SymfonyStyle($input, $output);
 		$name = $input->getArgument('name');
-		$configService = new ConfigService();
-		$providerFactory = new ProviderFactory($configService);
+		$this->io = new SymfonyStyle($input, $output);
+		$this->io->title('New GPT Configuration: ' . $name);
+		$this->config = $this->configService->createGptConfig($name);
 
-		$io->title('Create a new GPT: ' . $name);
+		try {
+			$this->askQuestions();
+			$systemPrompt = $this->io->ask('Enter the system prompt');
+			if (empty($systemPrompt)) {
+				throw new \Exception('System prompt cannot be empty.');
+			}
 
-		$title = $io->ask('Enter the title for the GPT');
-		$description = $io->ask('Enter the description');
-		$providerName = $io->choice(
+			$this->configService->getOrCreateConfigDir($name);
+			$this->configService->getOrCreateReferenceDir($name);
+
+			$this->configService
+				->saveSystemPrompt($name, $systemPrompt)
+				->saveGptConfig($name, $this->config);
+
+			$this->io->success('GPT configuration created successfully at ' . $this->config['path']);
+		} catch (\Exception $e) {
+			$this->io->error($e->getMessage());
+			return Command::FAILURE;
+		}
+
+		return Command::SUCCESS;
+	}
+
+	protected function askQuestions(): void
+	{
+		$this->config['title']           = $this->io->ask('Title', 'My Awesome GPT');
+		$this->config['description']     = $this->io->ask('Description', 'A helpful assistant.');
+		$this->config['provider']        = $this->askProvider();
+		$this->config['model']           = $this->askModel();
+		$this->config['system_prompt']   = './SYSTEM_PROMPT.md';
+		$this->config['reference_files'] = [];
+
+		if (empty($this->config['model'])) {
+			throw new \Exception('Model name cannot be empty.');
+		}
+	}
+
+	protected function askProvider(): string
+	{
+		return $this->io->choice(
 			'Select a provider',
 			array_keys(ProviderFactory::SUPPORTED_PROVIDERS),
 			'gemini'
 		);
+	}
 
-		$model = '';
+	protected function askModel(): string
+	{
+		$providerName = $this->config['provider'];
 		try {
-			$config = new GptConfig($configService->createGptConfig($name));
-			$config->provider = $providerName;
-			$provider = $providerFactory->createProvider($config);
+			$provider = $this->providerFactory->createProviderByName($providerName);
 			$models = $provider->listModels();
 			if (!empty($models)) {
 				$defaultModel = $provider->getDefaultModel();
 				$defaultModel = in_array($defaultModel, $models) ? $defaultModel : $models[0];
-				$model = $io->choice('Select a model', $models, $defaultModel);
+				return $this->io->choice('Select a model', $models, $defaultModel);
 			} else {
-				$io->warning("No models found for the {$providerName} provider. Please enter one manually.");
-				$model = $io->ask("Enter the model for {$providerName}");
+				$this->io->warning("No models found for the {$providerName} provider. Please enter one manually.");
 			}
 		} catch (\Exception $e) {
-			$io->warning("Could not fetch models for the {$providerName} provider. You can set the model manually.");
-			$io->warning($e->getMessage());
-			$model = $io->ask("Enter the model for {$providerName}");
+			$this->io->warning("Could not fetch models for the {$providerName} provider. You can set the model manually.");
+			$this->io->warning($e->getMessage());
 		}
 
-		if (empty($model)) {
-			$io->error('Model name cannot be empty.');
-			return Command::FAILURE;
-		}
-
-		$systemPrompt = $io->ask('Enter the system prompt');
-
-		$configService->getOrCreateConfigDir($name);
-		$configService->getOrCreateReferenceDir($name);
-
-		$configService
-			->saveSystemPrompt($name, $systemPrompt)
-			->saveGptConfig($name, [
-				'provider' => $providerName,
-				'title' => $title,
-				'description' => $description,
-				'model' => $model,
-				'system_prompt' => './SYSTEM_PROMPT.md',
-				'reference_files' => [],
-			]);
-
-		$io->success("GPT '{$name}' created successfully.");
-
-		return Command::SUCCESS;
+		return $this->io->ask("Enter the model for {$providerName}");
 	}
 }
