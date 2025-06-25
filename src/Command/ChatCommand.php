@@ -61,8 +61,11 @@ class ChatCommand extends Command
 			$messages[] = ['role' => 'user', 'parts' => [['text' => $message]]];
 			$response = $provider->chat($messages);
 
-			if ($input->getOption('verbose') || $input->getOption('v')) {
-				$this->printDetails($config, false);
+			try {
+				if ($input->getOption('verbose') || $input->getOption('v')) {
+					$this->printDetails($config, false);
+				}
+			} catch (\Exception $e) {
 			}
 
 			$output->writeln($response);
