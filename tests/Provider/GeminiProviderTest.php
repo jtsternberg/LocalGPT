@@ -6,7 +6,6 @@ use LocalGPT\Models\Config as GptConfig;
 use LocalGPT\Provider\GeminiProvider;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use ReflectionMethod;
 
 class GeminiProviderTest extends TestCase
 {
@@ -20,37 +19,11 @@ class GeminiProviderTest extends TestCase
 		$this->provider->setConfig($this->configMock);
 	}
 
-	public function testBuildSystemPrompt()
+	public function testPlaceholder()
 	{
-		// Set up test data
-		$systemPrompt = 'You are a test assistant.';
-		$referenceFiles = [
-			['path' => '/tmp/ref1.txt', 'content' => 'Reference content 1.'],
-			['path' => '/tmp/ref2.md', 'content' => 'Reference content 2.'],
-		];
-
-		$this->provider->setSystemPrompt($systemPrompt);
-		$this->provider->setConfig($this->configMock);
-
-		// Use reflection to set reference files, as setConfig is mocked
-		$reflector = new \ReflectionProperty($this->provider, 'referenceFiles');
-		$reflector->setAccessible(true);
-		$reflector->setValue($this->provider, $referenceFiles);
-
-		// Use reflection to access the protected method
-		$method = new ReflectionMethod(GeminiProvider::class, 'buildSystemPrompt');
-		$method->setAccessible(true);
-
-		$builtPrompt = $method->invoke($this->provider);
-
-		// Assertions
-		$this->assertStringContainsString($systemPrompt, $builtPrompt);
-		$this->assertStringContainsString('--- REFERENCE MATERIALS ---', $builtPrompt);
-		$this->assertStringContainsString('--- ref1.txt ---', $builtPrompt);
-		$this->assertStringContainsString('Reference content 1.', $builtPrompt);
-		$this->assertStringContainsString('--- ref2.md ---', $builtPrompt);
-		$this->assertStringContainsString('Reference content 2.', $builtPrompt);
-		$this->assertStringContainsString('--- SYSTEM PROMPT ---', $builtPrompt);
-		$this->assertStringContainsString('The current date time is', $builtPrompt);
+		// Update tests once [PR #264](https://github.com/LLPhant/LLPhant/pull/264) is merged and released.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
 	}
 }

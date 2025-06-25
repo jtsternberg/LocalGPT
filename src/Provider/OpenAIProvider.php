@@ -9,9 +9,14 @@ class OpenAIProvider extends BaseProvider
 {
 	public const DEFAULT_MODEL = 'gpt-4o-mini';
 
-	public function __construct(string $apiKey)
+	public function __construct(string $apiKey, ?OpenAIChat $client = null)
 	{
 		parent::__construct($apiKey);
+
+		if ($client) {
+			$this->client = $client;
+			return;
+		}
 
 		$config = new OpenAIConfig();
 		$config->apiKey = $apiKey;

@@ -9,9 +9,15 @@ class AnthropicProvider extends BaseProvider
 {
 	public const DEFAULT_MODEL = 'claude-3-5-sonnet-20240620';
 
-	public function __construct(string $apiKey)
+	public function __construct(string $apiKey, ?AnthropicChat $client = null)
 	{
 		parent::__construct($apiKey);
+
+		if ($client) {
+			$this->client = $client;
+			return;
+		}
+
 		$config = new AnthropicConfig(
 			model: self::DEFAULT_MODEL,
 			apiKey: $this->apiKey
