@@ -3,6 +3,7 @@
 namespace LocalGPT\Command;
 
 use LocalGPT\Service\Config as ConfigService;
+use LocalGPT\Service\ModelsDevService;
 use LocalGPT\Service\ProviderFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -23,11 +24,13 @@ class NewCommand extends Command
 
 	public function __construct(
 		protected ?ConfigService $configService = null,
-		protected ?ProviderFactory $providerFactory = null
+		protected ?ProviderFactory $providerFactory = null,
+		protected ?ModelsDevService $modelsDevService = null
 	) {
 		parent::__construct();
-		$this->configService   = $this->configService ?? new ConfigService();
-		$this->providerFactory = $this->providerFactory ?? new ProviderFactory($this->configService);
+		$this->configService    = $this->configService ?? new ConfigService();
+		$this->providerFactory  = $this->providerFactory ?? new ProviderFactory($this->configService);
+		$this->modelsDevService = $this->modelsDevService ?? new ModelsDevService();
 	}
 
 	protected function configure()
@@ -93,12 +96,25 @@ class NewCommand extends Command
 		$providerName = $this->config['provider'];
 		try {
 			$provider = $this->providerFactory->createProviderByName($providerName);
-			$models = $provider->listModels();
+			$models   = $provider->listModels();
+
+			if ( 'ollama' !== $providerName ) {
+
+				$fetchedModels = $this->modelsDevService->getProviderModels($providerName);
+				$fetchedModels = array_column($fetchedModels, 'id');
+
+				if (count($fetchedModels) > count($models)) {
+					$models = $fetchedModels;
+				}
+			}
+
 			if (!empty($models)) {
 				$defaultModel = $provider->getDefaultModel();
 				$defaultModel = in_array($defaultModel, $models) ? $defaultModel : $models[0];
+				$this->io->writeln('<fg=gray>(hint: use `localgpt models <model-id>` for more information about that model!)</>');
 				return $this->io->choice('Select a model', $models, $defaultModel);
 			} else {
+				$this->io->writeln('<fg=gray>(hint: use `bin/localgpt models -v` to see details about available providers/models)</>');
 				$this->io->warning("No models found for the {$providerName} provider. Please enter one manually.");
 			}
 		} catch (\Exception $e) {
@@ -106,6 +122,20 @@ class NewCommand extends Command
 			$this->io->warning($e->getMessage());
 		}
 
-		return $this->io->ask("Enter the model for {$providerName}");
+		return $this->io->ask(
+			"Enter the model for {$providerName}",
+			null,
+			function (?string $modelId = null): string {
+				if (empty($modelId)) {
+					throw new \RuntimeException('Model cannot be empty.');
+				}
+
+				if (! $this->modelsDevService->findModel($modelId)) {
+					throw new \RuntimeException(sprintf('Model "%s" is not a valid model.', $modelId));
+				}
+
+				return $modelId;
+			}
+		);
 	}
 }

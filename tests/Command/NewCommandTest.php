@@ -5,6 +5,7 @@ namespace tests\Command;
 use LocalGPT\Command\NewCommand;
 use LocalGPT\Provider\GeminiProvider;
 use LocalGPT\Service\Config as ConfigService;
+use LocalGPT\Service\ModelsDevService;
 use LocalGPT\Service\ProviderFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -13,6 +14,7 @@ class NewCommandTest extends TestCase
 {
 	private $configServiceMock;
 	private $providerFactoryMock;
+	private $modelsDevServiceMock;
 	private $command;
 	private $commandTester;
 
@@ -20,7 +22,8 @@ class NewCommandTest extends TestCase
 	{
 		$this->configServiceMock = $this->createMock(ConfigService::class);
 		$this->providerFactoryMock = $this->createMock(ProviderFactory::class);
-		$this->command = new NewCommand($this->configServiceMock, $this->providerFactoryMock);
+		$this->modelsDevServiceMock = $this->createMock(ModelsDevService::class);
+		$this->command = new NewCommand($this->configServiceMock, $this->providerFactoryMock, $this->modelsDevServiceMock);
 		$this->commandTester = new CommandTester($this->command);
 	}
 
@@ -32,8 +35,11 @@ class NewCommandTest extends TestCase
 		// Mock provider and models
 		$geminiProviderMock = $this->createMock(GeminiProvider::class);
 		$geminiProviderMock->method('listModels')->willReturn(['gemini-pro', 'gemini-flash']);
+		$geminiProviderMock->method('getDefaultModel')->willReturn('gemini-pro');
 
 		$this->providerFactoryMock->method('createProviderByName')->willReturn($geminiProviderMock);
+
+		$this->modelsDevServiceMock->method('getProviderModels')->willReturn([]);
 
 		// Mock ConfigService methods
 		$this->configServiceMock->method('createGptConfig')->with($gptName)->willReturn(['path' => $configPath]);

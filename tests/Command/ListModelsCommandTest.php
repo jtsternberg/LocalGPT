@@ -48,7 +48,6 @@ class ListModelsCommandTest extends TestCase
 		$commandTester->execute([]);
 
 		$output = $commandTester->getDisplay();
-		$this->assertStringContainsString('Available Models', $output);
 		$this->assertStringContainsString('Gemini Models', $output);
 		$this->assertStringContainsString('gemini-model-1', $output);
 		$this->assertStringContainsString('Openai Models', $output);

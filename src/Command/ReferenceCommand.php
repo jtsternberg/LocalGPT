@@ -39,7 +39,7 @@ class ReferenceCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$this->io            = new SymfonyStyle($input, $output);
+		$this->io = new SymfonyStyle($input, $output);
 
 		try {
 			$this->setupConfig($input->getArgument('name'));

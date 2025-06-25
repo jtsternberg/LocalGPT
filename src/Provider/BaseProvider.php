@@ -7,6 +7,7 @@ use LocalGPT\Models\Config;
 abstract class BaseProvider implements ProviderInterface
 {
 	public const DEFAULT_MODEL = '';
+	protected $name = '';
 	protected $client;
 	protected string $apiKey;
 	protected $model;
@@ -23,6 +24,11 @@ abstract class BaseProvider implements ProviderInterface
 	public function setModel(string $model): void
 	{
 		$this->model = $model;
+	}
+
+	public function getName(): string
+	{
+		return $this->name;
 	}
 
 	public function getDefaultModel(): string
