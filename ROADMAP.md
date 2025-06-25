@@ -5,7 +5,6 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Providers](#providers)
-- [Integrate with Models.dev](#integrate-with-modelsdev)
 - [PHP Library](#php-library)
 - [Dynamic System Prompt (Replacements)](#dynamic-system-prompt-replacements)
   - [Implementation Steps](#implementation-steps)
@@ -27,25 +26,6 @@
   - [ ] Enable port config option in the config json file, since ollama could be running on a different port.
 - [ ] DeepSeek
 
-## Integrate with Models.dev
-
-**Why Models.dev?**
-Models.dev is an open-source database of AI models that provides comprehensive model specifications, pricing, and capabilities for 200+ models across 20+ providers. It offers:
-- Real-time model data via API (`https://models.dev/api.json`)
-- Standardized model IDs compatible with AI SDK
-- Detailed specifications (context limits, pricing, capabilities, release dates)
-- Community-maintained and up-to-date information
-
-**Implementation Tasks:**
-- [ ] Leverage the [Models.dev](https://models.dev/) API to dynamically fetch and update the list of available models for each provider.
-  - [ ] Create a caching mechanism to store the model data locally to avoid excessive API calls.
-  - [ ] Update the `models` command to list available models without excessive detail by default.
-  - [ ] Add a `--provider` option to the `models` command to filter the list by a specific provider.
-  - [ ] Allow passing a model ID to the `models` command (e.g., `localgpt models <model-id>`) to display richer information, such as context window size, pricing, and release date.
-  - [ ] Add a `--verbose` option to the `models` command to output additional details in a CLI-friendly format (e.g., a vertical list).
-  - [ ] In the `new` command's interactive wizard, during model selection, display a hint: `(hint: use localgpt models <model-id> for more information about that model!)`.
-  - [ ] Add model validation during GPT creation to ensure selected models exist and are supported.
-  - [ ] Show model capabilities (tool calling, reasoning, attachments) in model selection interfaces.
 
 ## PHP Library
 
@@ -115,6 +95,7 @@ Maybe we could use https://github.com/llm-agents-php/agents to build an agent fo
 - [X] Implement reference file handling:
   - [X] **MVP:** Initially, load the full content of reference files directly into the chat context.
   - [ ] **Future:** Transition to using embeddings and a vector store for more efficient and scalable retrieval of relevant information from reference files.
+    - Potential example: https://github.com/ezimuel/php-llm-examples/blob/main/src/rag/fwdays/embedding.php
     - [ ] **Note:** LLPhant's upcoming Gemini support ([PR #264](https://github.com/LLPhant/LLPhant/pull/264)) includes a `GeminiEmbeddingGenerator`. This will be key to implementing embeddings for the Gemini provider.
 
 ## Chat History
