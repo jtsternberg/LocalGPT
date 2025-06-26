@@ -6,6 +6,7 @@
 
 - [Providers](#providers)
 - [PHP Library](#php-library)
+- [API Key Management](#api-key-management)
 - [Dynamic System Prompt (Replacements)](#dynamic-system-prompt-replacements)
   - [Implementation Steps](#implementation-steps)
 - [System Prompt Builder](#system-prompt-builder)
@@ -30,6 +31,14 @@
 ## PHP Library
 
 - [ ] Expose a public PHP API for using LocalGPT in your own PHP projects.
+
+## API Key Management
+
+- [ ] On first run, if no API keys are found for a required provider, prompt the user to enter them (in the session), then store them in the `.env` file.
+- [ ] Store the entered API keys in a `.env` file located at `~/.config/localgpt/.env`.
+- [ ] Update the configuration loading logic to:
+    - First, look for `.env` in `~/.config/localgpt/`.
+    - Then, look for `.env` in the current working directory (maintaining current behavior).
 
 ## Dynamic System Prompt (Replacements)
 
